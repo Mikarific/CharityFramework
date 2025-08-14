@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
+		"lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost", "ESNext"]
+	},
+	"include": ["src/**/*"]
+}
