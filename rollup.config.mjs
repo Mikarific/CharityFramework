@@ -11,6 +11,17 @@ import userscript from 'rollup-plugin-userscript';
 import { readPackageUp } from 'read-package-up';
 const { packageJson } = await readPackageUp();
 
+
+const wrapInScriptElement = () => {
+  return {
+    name: 'wrap-in-script-element',
+    renderChunk(code) {
+      return `const elem = document.createElement('script');elem.textContent = \`window.stop();(\${(async () => {${code}}).toString()})();\`;document.documentElement.appendChild(elem);`
+    },
+  };
+};
+
+
 export default defineConfig([
 	{
 		input: 'src/index.ts',
@@ -25,6 +36,7 @@ export default defineConfig([
 			commonjsPlugin(),
 			jsonPlugin(),
 			typescript(),
+			wrapInScriptElement(),
 			userscript((meta) =>
 				meta
 			.replace('process.env.AUTHOR', packageJson.author.name)

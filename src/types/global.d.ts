@@ -1,5 +1,6 @@
 import type * as maplibregl from 'maplibre-gl';
 import type { toast } from 'svelte-sonner';
+import { Plugin } from '../plugins';
 
 declare global {
 	class FlagsBitmap {
@@ -68,6 +69,8 @@ declare global {
 				seasons: { tileSize: number; zoom: number }[];
 				user: User;
 			};
+			plugins: Plugin[];
+			registerPlugin: (plugin: Plugin) => {};
 		};
 		esmsInitOptions?: {
 			shimMode?: boolean;

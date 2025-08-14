@@ -8,3 +8,4 @@ node_modules
 /docs
 bun.lockb
 package-lock.json
+.DS_Store

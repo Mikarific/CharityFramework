@@ -2,7 +2,7 @@
 	"name": "wplace-framework",
 	"version": "0.1.0-beta",
 	"description": "Framework for hooking into Wplace.",
-	"author": "Mikarific",
+	"author": "Mikarific, xyzeva",
 	"license": "MIT",
 	"private": true,
 	"engines": {

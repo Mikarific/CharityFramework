@@ -1,10 +1,9 @@
 import './meta.js?userscript-metadata';
+import { builtinPatches, Patch } from './patches';
+import { loadPlugins } from './plugins/loader';
+import { defineGlobalPath } from './utils/global';
 
-const elem = document.createElement('script');
-elem.textContent = `window.stop();(${(async () => {
-	Object.defineProperty(window, 'WPF', { configurable: false, enumerable: true, writable: false, value: {} });
-	Object.defineProperty(window.WPF, 'lib', { configurable: false, enumerable: true, writable: false, value: {} });
-	Object.defineProperty(window.WPF, 'game', { configurable: false, enumerable: true, writable: false, value: {} });
+(async () => {
 	const unparsedHtml = await (await fetch(location.href)).text();
 	const parsedHtml = new DOMParser().parseFromString(unparsedHtml, 'text/html');
 	for (const attr of document.firstElementChild.attributes) {
@@ -14,6 +13,22 @@ elem.textContent = `window.stop();(${(async () => {
 		document.firstElementChild.setAttributeNode(attr.cloneNode() as Attr);
 	}
 	document.firstElementChild.replaceChildren(...parsedHtml.firstElementChild.children);
+
+	defineGlobalPath(window, 'WPF');
+	await loadPlugins();
+
+	const patches: Patch[] = [
+		...builtinPatches(),
+		...window.WPF.plugins
+			.map((plugin) =>
+				plugin.patches.map((patch) => ({
+					...patch,
+					name: `${plugin.id}_${patch.name}`,
+				})),
+			)
+			.flat(1),
+		,
+	];
 
 	window.esmsInitOptions = {
 		shimMode: true,
@@ -25,62 +40,29 @@ elem.textContent = `window.stop();(${(async () => {
 				source: string | WebAssembly.Module;
 			} = await defaultSourceHook(url, fetchOpts, parent);
 			if (typeof src.source === 'string') {
-				const expose = (path: string, name: string, value: string, regex?: RegExp) => {
-					if (regex !== null && regex !== undefined) {
-						src.source = (src.source as string).replace(regex, (match) => {
-							return `${match}Object.defineProperty(window.WPF.${path},'${name}',{configurable:false,enumerable:true,writable:false,value:${value}});`;
-						});
-					} else {
-						src.source += `Object.defineProperty(window.WPF.${path},'${name}',{configurable:false,enumerable:true,writable:false,value:${value}});`;
-					}
-				};
-				const path = (path: string, name: string) => {
-					eval(
-						`Object.defineProperty(window.WPF.${path},'${name}',{configurable:false,enumerable:true,writable:false,value:{}});`,
-					);
-				};
-				const match = (regex: RegExp) => (src.source as string).match(regex)?.[1] ?? null;
+				let sourceStr = src.source as string;
+				for (const patch of patches) {
+					if (!patch) continue;
+					if (patch.disable) continue;
 
-				if (src.source.includes('__paraglide')) {
-					path('lib', 'paraglide');
-					const getLocale = match(/([a-zA-Z_$][a-zA-Z0-9_$]*)=\(\)=>.*getLocale/);
-					if (getLocale) expose('lib.paraglide', 'getLocale', getLocale);
-					const setLocale = match(/([a-zA-Z_$][a-zA-Z0-9_$]*)=\([^)]*,[^)]*\)=>.*setLocale/);
-					if (setLocale) expose('lib.paraglide', 'setLocale', setLocale);
+					if (!sourceStr.includes(patch.find)) continue;
+					console.log(`[WPF] patching ${url} with patch ${patch.name}`);
+
+					const replaced = sourceStr.replace(patch.replace.match, patch.replace.replace);
+
+					if (replaced === sourceStr) {
+						console.warn('[WPF] patch ' + patch.name + ' made no changes to ' + url + ' even though it matched');
+						continue;
+					}
+
+					console.debug('[WPF]', 'new', url, 'after patch', patch.name, replaced);
+					sourceStr = replaced;
 				}
 
-				if (src.source.includes('backend.wplace.live')) {
-					const data = match(/([a-zA-Z_$][a-zA-Z0-9_$]*)={[^{]*?countries:[^}]*?}/);
-					if (data) {
-						expose('game', 'colors', `${data}.colors`);
-						expose('game', 'countries', `${data}.countries`);
-						expose('game', 'regionSize', `${data}.regionSize`);
-						expose('game', 'seasons', `${data}.seasons`);
-					}
+				// sourceStr += `console.log("Hooked: ${url}");`;
 
-					path('lib', 'sonner');
-					const toast = match(/([a-zA-Z_$][a-zA-Z0-9_$]*)=Object\.assign.*?getActiveToasts/);
-					if (toast) expose('lib.sonner', 'toast', toast);
-
-					const userClass = match(/class ([a-zA-Z_$][a-zA-Z0-9_$]*)[^}]*?user-channel/);
-					if (userClass) {
-						const user = match(new RegExp(`([a-zA-Z_$][a-zA-Z0-9_$]*)=new ${userClass}`));
-						if (user) expose('game', 'user', user);
-					}
-				}
-
-				if (src.source.includes('MapLibre GL JS')) {
-					const maplibre = match(/new ([a-zA-Z_$][a-zA-Z0-9_$]*)\.Map/);
-					if (maplibre) {
-						expose('lib', 'maplibre', maplibre);
-						const map = match(new RegExp(`([a-zA-Z_$][a-zA-Z0-9_$]*)=new ${maplibre}.Map`));
-						if (map) {
-							expose('game', 'map', map, new RegExp(`${map}=new ${maplibre}.Map\\(.*?}\\);`));
-						}
-					}
-				}
+				src.source = sourceStr;
 			}
-			src.source += `console.log("Hooked: ${url}");`;
 			return src;
 		},
 	};
@@ -103,5 +85,8 @@ elem.textContent = `window.stop();(${(async () => {
 		value: null,
 		configurable: true,
 	});
-}).toString()})();`;
-document.documentElement.appendChild(elem);
+
+	for (const plugin of window.WPF.plugins) {
+		await plugin.load();
+	}
+})();
