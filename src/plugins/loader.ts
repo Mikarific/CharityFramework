@@ -1,9 +1,34 @@
-import { Plugin, PluginState } from '.';
+import { fetchManifest, Plugin, PluginDefinition, PluginManifest, PluginState, validatePluginDefintion } from '.';
 import { GM_fetch } from '../utils/fetch';
-import { defineGlobalPath, defineHiddenPath } from '../utils/global';
-import semver from 'semver';
+import { defineHiddenPath } from '../utils/global';
 
 const PLUGIN_STATES_KEY = 'charity.plugins';
+
+/** This function WILL throw on manifest validation failures */
+export const addPlugin = async (url: string) => {
+	const manifest = await fetchManifest(url);
+	const pluginStates: PluginState[] = JSON.parse(localStorage.getItem(PLUGIN_STATES_KEY));
+
+	pluginStates.push({ id: manifest.id, url, enabled: true, error: null });
+	localStorage.setItem(PLUGIN_STATES_KEY, JSON.stringify(pluginStates));
+	location.reload();
+};
+
+export const loadPlugin = async (url: string, manifest: PluginManifest) => {
+	const res = await GM_fetch({ method: 'GET', url: url + 'index.js?' + Date.now() });
+	if (res.status !== 200) {
+		throw new Error('failed to fetch bundle status=' + res.status);
+	}
+
+	const code = res.responseText;
+
+	const def: PluginDefinition = await eval(code);
+	validatePluginDefintion(def);
+
+	const plugin: Plugin = { manifest, def };
+	window.charity.internal.plugins.push(plugin);
+	console.log('[Charity]', 'registered plugin', manifest.id, `(${manifest.version})`);
+};
 
 export const loadPlugins = async () => {
 	defineHiddenPath(window.charity, 'internal');
@@ -14,49 +39,30 @@ export const loadPlugins = async () => {
 		value: [],
 	});
 
-	defineGlobalPath(window.charity, 'plugin');
-	Object.defineProperty(window.charity.plugin, 'register', {
-		configurable: false,
-		enumerable: true,
-		writable: false,
-		value: (plugin: Plugin) => {
-			if (!semver.satisfies(GM.info.script.version, plugin.versions.framework)) {
-				throw new Error(
-					'plugin ' +
-						plugin.id +
-						' wants framework version ' +
-						plugin.versions.framework +
-						' but the present framework version is only ' +
-						GM.info.script.version +
-						'! please update your Charity Framework version',
-				);
-			}
-
-			window.charity.internal.plugins.push(plugin);
-			console.log('[Charity]', 'registered plugin', plugin.id, `(${plugin.version})`);
-		},
-	});
-
 	const pluginStates: PluginState[] = JSON.parse(localStorage.getItem(PLUGIN_STATES_KEY) ?? '[]');
 
 	for (const state of pluginStates) {
 		if (!state.enabled) continue;
 		const index = pluginStates.indexOf(state);
 		try {
-			const res = await GM_fetch({ method: 'GET', url: state.url + '?' + Date.now() });
-			if (res.status !== 200) {
-				console.warn('[Charity] plugin url', state.url, `failed to load, status=${res.status}`);
-				continue;
+			const url = state.url.endsWith('/') ? state.url : state.url + '/';
+			const manifest = await fetchManifest(url);
+
+			if (manifest.id !== state.id) {
+				console.warn(
+					'[Charity]',
+					'plugin at url',
+					url,
+					'id changed from',
+					state.id,
+					'to',
+					manifest.id,
+					'updating state',
+				);
+				state.id = manifest.id;
 			}
 
-			const prevLength = window.charity.internal.plugins.length;
-			eval(res.responseText);
-
-			if (prevLength === window.charity.internal.plugins.length) {
-				console.warn('[Charity]', 'plugin url', state.url, 'never registered a plugin');
-				state.error = 'never registered a plugin';
-				continue;
-			}
+			await loadPlugin(url, manifest);
 
 			state.error = null;
 		} catch (error) {

@@ -47,9 +47,9 @@ window.stop();
 		...builtinPatches(),
 		...window.charity.internal.plugins
 			.map((plugin) =>
-				plugin.patches.map((patch) => ({
+				plugin.def.patches.map((patch) => ({
 					...patch,
-					name: `${plugin.id}_${patch.name}`,
+					name: `${plugin.manifest.id}_${patch.name}`,
 				})),
 			)
 			.flat(1),
@@ -111,6 +111,6 @@ window.stop();
 	});
 
 	for (const plugin of window.charity.internal.plugins) {
-		await plugin.load();
+		await plugin.def.load();
 	}
 })();
