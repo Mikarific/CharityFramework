@@ -20,14 +20,14 @@ export const loadPlugins = async () => {
 		enumerable: true,
 		writable: false,
 		value: (plugin: Plugin) => {
-			if (!semver.satisfies(GM.info.version, plugin.versions.framework)) {
+			if (!semver.satisfies(GM.info.script.version, plugin.versions.framework)) {
 				throw new Error(
 					'plugin ' +
 						plugin.id +
 						' wants framework version ' +
 						plugin.versions.framework +
 						' but the present framework version is only ' +
-						GM_info.version +
+						GM.info.script.version +
 						'! please update your Charity Framework version',
 				);
 			}
