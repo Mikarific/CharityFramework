@@ -12,7 +12,7 @@ export function About() {
 					<p class={styles.gray}>v{GM.info.script.version}</p>
 				</div>
 				<div class={styles.author}>
-					<p>Author</p>
+					<p>Authors</p>
 					<p class={styles.gray}>{GM.info.script.author}</p>
 				</div>
 			</div>

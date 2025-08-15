@@ -22,9 +22,4 @@ export function init() {
 
 	createPanel(shadowRoot);
 	document.body.appendChild(host);
-
-	const { width, height } = host.getBoundingClientRect();
-	const x = window.innerWidth / 2 - width / 2;
-	const y = window.innerHeight / 2 - height / 2;
-	host.style.inset = `${y}px auto auto ${x}px`;
 }

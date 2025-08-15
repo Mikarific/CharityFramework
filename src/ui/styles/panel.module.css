@@ -49,6 +49,17 @@
 	text-decoration: underline;
 }
 
+.close {
+	position: absolute;
+	background-color: #0000;
+	border: none;
+	width: 48px;
+	color: #fff;
+	right: 0;
+	cursor: pointer;
+	padding: 0;
+}
+
 .about {
 	display: flex;
 	flex-direction: column;
