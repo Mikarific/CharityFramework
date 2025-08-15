@@ -1,11 +1,15 @@
 import { For } from 'solid-js';
 
-import { addPlugin, removePlugin } from '../../plugins/loader';
+import { addPlugin, getPluginStates, removePlugin } from '../../plugins/loader';
 import styles from '../styles/panel.module.css';
 
 let input: HTMLInputElement;
 
 export function Plugins() {
+	console.log('hi');
+	const brokenPlugins = getPluginStates().filter((s) => s.enabled && s.error);
+	console.log('brokenPlugins', brokenPlugins);
+
 	return (
 		<div class={styles.plugins}>
 			<div class={styles.addPlugin}>
@@ -29,6 +33,24 @@ export function Plugins() {
 				</button>
 			</div>
 			<div>
+				<For each={brokenPlugins}>
+					{(brokenPlugin) => (
+						<div class={styles.plugin}>
+							<div class={`${styles.pluginName} ${styles.brokenPlugin}`}>
+								<span class={styles.gray}>{brokenPlugin.id}</span>&nbsp;
+								<span class={styles.red}>is broken, refresh and check console for error</span>
+							</div>
+							<button
+								onClick={() => {
+									removePlugin(brokenPlugin.id);
+								}}
+								onMouseDown={(e) => e.stopPropagation()}
+							>
+								Remove
+							</button>
+						</div>
+					)}
+				</For>
 				<For each={window.charity.internal.plugins}>
 					{(plugin) => {
 						return (

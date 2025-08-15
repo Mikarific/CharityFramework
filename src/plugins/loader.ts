@@ -7,19 +7,23 @@ const PLUGIN_STATES_KEY = 'charity.plugins';
 /** This function WILL throw on manifest validation failures */
 export const addPlugin = async (url: string) => {
 	const manifest = await fetchManifest(url);
-	const pluginStates: PluginState[] = JSON.parse(localStorage.getItem(PLUGIN_STATES_KEY));
+	const pluginStates = getPluginStates();
 	if (pluginStates.find((s) => s.url === url || s.id === manifest.id)) throw new Error('plugin already installed');
 	pluginStates.push({ id: manifest.id, url, enabled: true, error: null });
-	localStorage.setItem(PLUGIN_STATES_KEY, JSON.stringify(pluginStates));
+	setPluginStates(pluginStates);
 	location.reload();
 };
 
 export const removePlugin = (id: string) => {
-	let pluginStates: PluginState[] = JSON.parse(localStorage.getItem(PLUGIN_STATES_KEY));
+	let pluginStates = getPluginStates();
 	pluginStates = pluginStates.filter((s) => s.id !== id);
-	localStorage.setItem(PLUGIN_STATES_KEY, JSON.stringify(pluginStates));
+	setPluginStates(pluginStates);
 	location.reload();
 };
+
+export const getPluginStates = (): PluginState[] => JSON.parse(localStorage.getItem(PLUGIN_STATES_KEY));
+export const setPluginStates = (states: PluginState[]) =>
+	localStorage.setItem(PLUGIN_STATES_KEY, JSON.stringify(states));
 
 export const loadPlugin = async (url: string, manifest: PluginManifest) => {
 	const res = await GM_fetch({ method: 'GET', url: url + 'index.js?' + Date.now() });
@@ -74,7 +78,7 @@ export const loadPlugins = async () => {
 			state.error = null;
 		} catch (error) {
 			// state.enabled = false;
-			state.error = error.toString();
+			state.error = `${error}`;
 			console.error('[Charity]', 'plugin url', state.url, 'failed to load', error);
 		}
 
