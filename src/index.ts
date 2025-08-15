@@ -14,6 +14,29 @@ import { defineGlobalPath } from './utils/global';
 	}
 	document.firstElementChild.replaceChildren(...parsedHtml.firstElementChild.children);
 
+	// cursed as fuck double header patch, replace this with a fork of esmshims later lmao
+	window.fetch = new Proxy(window.fetch, {
+		async apply(target, thisArg, args) {
+			const response = await Reflect.apply(target, thisArg, args);
+			const contentType = response.headers.get('Content-Type');
+			if (contentType && contentType === 'application/javascript, application/javascript') {
+				const headers = new Headers(response.headers);
+				headers.set('Content-Type', 'application/javascript');
+				const patched = new Response(response.body, {
+					status: response.status,
+					statusText: response.statusText,
+					headers,
+				});
+				Object.defineProperty(patched, 'url', { value: response.url });
+				Object.defineProperty(patched, 'ok', { value: response.ok });
+				Object.defineProperty(patched, 'redirected', { value: response.redirected });
+				Object.defineProperty(patched, 'type', { value: response.type });
+				return patched;
+			}
+			return response;
+		},
+	});
+
 	defineGlobalPath(window, 'WPF');
 	await loadPlugins();
 
