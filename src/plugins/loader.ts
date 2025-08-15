@@ -14,6 +14,13 @@ export const addPlugin = async (url: string) => {
 	location.reload();
 };
 
+export const removePlugin = (id: string) => {
+	let pluginStates: PluginState[] = JSON.parse(localStorage.getItem(PLUGIN_STATES_KEY));
+	pluginStates = pluginStates.filter((s) => s.id !== id);
+	localStorage.setItem(PLUGIN_STATES_KEY, JSON.stringify(pluginStates));
+	location.reload();
+};
+
 export const loadPlugin = async (url: string, manifest: PluginManifest) => {
 	const res = await GM_fetch({ method: 'GET', url: url + 'index.js?' + Date.now() });
 	if (res.status !== 200) {
