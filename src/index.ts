@@ -27,7 +27,6 @@ import { defineGlobalPath } from './utils/global';
 				})),
 			)
 			.flat(1),
-		,
 	];
 
 	window.esmsInitOptions = {

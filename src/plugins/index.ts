@@ -6,5 +6,5 @@ export interface Plugin {
 	version: string;
 	authors: string[];
 	patches: Patch[];
-	load: () => any;
+	load: () => void;
 }

@@ -70,7 +70,7 @@ declare global {
 				user: User;
 			};
 			plugins: Plugin[];
-			registerPlugin: (plugin: Plugin) => {};
+			registerPlugin: (plugin: Plugin) => void;
 		};
 		esmsInitOptions?: {
 			shimMode?: boolean;
