@@ -1,7 +1,7 @@
 {
 	"name": "charity-framework",
 	"version": "0.1.0-beta",
-	"description": "Framework for hooking into Wplace.",
+	"description": "A plugin loader for wplace.live.",
 	"author": "Mikarific, xyzeva",
 	"license": "MIT",
 	"private": true,
