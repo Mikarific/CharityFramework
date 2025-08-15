@@ -12,5 +12,8 @@ export interface Plugin {
 	version: string;
 	authors: string[];
 	patches: Patch[];
+	versions: {
+		framework: string;
+	};
 	load: () => void;
 }

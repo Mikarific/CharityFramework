@@ -1,6 +1,7 @@
 import { Plugin, PluginState } from '.';
 import { GM_fetch } from '../utils/fetch';
 import { defineGlobalPath, defineHiddenPath } from '../utils/global';
+import semver from 'semver';
 
 const PLUGIN_STATES_KEY = 'charity.plugins';
 
@@ -19,6 +20,18 @@ export const loadPlugins = async () => {
 		enumerable: true,
 		writable: false,
 		value: (plugin: Plugin) => {
+			if (!semver.satisfies(GM.info.script.version, plugin.versions.framework)) {
+				throw new Error(
+					'plugin ' +
+						plugin.id +
+						' wants framework version ' +
+						plugin.versions.framework +
+						' but the present framework version is only ' +
+						GM.info.script.version +
+						'! please update your Charity Framework version',
+				);
+			}
+
 			window.charity.internal.plugins.push(plugin);
 			console.log('[Charity]', 'registered plugin', plugin.id, `(${plugin.version})`);
 		},
@@ -47,8 +60,9 @@ export const loadPlugins = async () => {
 
 			state.error = null;
 		} catch (error) {
-			state.enabled = false;
+			// state.enabled = false;
 			state.error = error.toString();
+			console.error('[Charity]', 'plugin url', state.url, 'failed to load', error);
 		}
 
 		pluginStates[index] = state;
