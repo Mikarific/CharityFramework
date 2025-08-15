@@ -99,6 +99,9 @@
 }
 
 .plugins {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
 	padding: 8px;
 }
 
@@ -132,11 +135,52 @@
 	border: 3px solid #3f6212;
 	font-size: 16px;
 	line-height: 20px;
-	min-width: 64px;
 	cursor: pointer;
+	min-width: 96px;
 }
 
 .addPlugin > button:hover {
 	text-decoration: underline;
 	border: 3px solid #a3e635;
+}
+
+.plugin {
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+}
+
+.pluginName {
+	flex-grow: 1;
+	height: 48px;
+	display: flex;
+	align-items: center;
+	background-color: #2a303c;
+	border: 3px solid #1f242d;
+	font-family: 'Sevenish', serif;
+	color: #fff;
+	transform: perspective(1px);
+	font-size: 16px;
+	line-height: 20px;
+	margin: 0;
+	padding-left: 12px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.plugin > button {
+	background-color: #ef4444;
+	font-family: 'Sevenish', serif;
+	color: #fca5a5;
+	border: 3px solid #991b1b;
+	font-size: 16px;
+	line-height: 20px;
+	min-width: 64px;
+	cursor: pointer;
+	min-width: 96px;
+}
+
+.plugin > button:hover {
+	text-decoration: underline;
+	border: 3px solid #f87171;
 }
