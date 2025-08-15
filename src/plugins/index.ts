@@ -1,5 +1,11 @@
 import { Patch } from '../patches';
 
+export interface PluginState {
+	url: string;
+	enabled: boolean;
+	error: string | null;
+}
+
 export interface Plugin {
 	id: string;
 	name: string;
