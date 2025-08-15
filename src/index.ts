@@ -5,6 +5,7 @@ import { builtinPatches, Patch } from './patches';
 import { loadPlugins } from './plugins/loader';
 import { defineGlobalPath } from './utils/global';
 
+window.stop();
 (async () => {
 	const unparsedHtml = await (await fetch(location.href)).text();
 	const parsedHtml = new DOMParser().parseFromString(unparsedHtml, 'text/html');
@@ -44,7 +45,7 @@ import { defineGlobalPath } from './utils/global';
 
 	const patches: Patch[] = [
 		...builtinPatches(),
-		...window.WPF.plugins
+		...window.WPF.internal.plugins
 			.map((plugin) =>
 				plugin.patches.map((patch) => ({
 					...patch,
@@ -109,7 +110,7 @@ import { defineGlobalPath } from './utils/global';
 		configurable: true,
 	});
 
-	for (const plugin of window.WPF.plugins) {
+	for (const plugin of window.WPF.internal.plugins) {
 		await plugin.load();
 	}
 })();

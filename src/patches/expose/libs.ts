@@ -6,13 +6,14 @@ export const exposeLibraries = (): Patch[] => {
 	defineGlobalPath(window.WPF, 'lib');
 
 	defineGlobalPath(window.WPF.lib, 'paraglide');
+	defineGlobalPath(window.WPF.lib, 'sonner');
 	return [
 		// paraglide
 		{
 			name: 'exposeParaglideGetLocale',
 			find: '__paraglide',
 			replace: {
-				match: /([a-zA-Z_$][a-zA-Z0-9_$]*)=\(\)=>.*getLocale\(\);.*/,
+				match: /([a-zA-Z_$][\w$]*)=\(\)=>.*getLocale\(\);.*/,
 				replace: (orig, funName) => `${orig};${expose('lib.paraglide', 'getLocale', funName)}`,
 			},
 		},
@@ -20,7 +21,7 @@ export const exposeLibraries = (): Patch[] => {
 			name: 'exposeParaglideSetLocale',
 			find: '__paraglide',
 			replace: {
-				match: /([a-zA-Z_$][a-zA-Z0-9_$]*)=\([^)]*,[^)]*\)=>.*setLocale.*/,
+				match: /([a-zA-Z_$][\w$]*)=\([^)]*,[^)]*\)=>.*setLocale.*/,
 				replace: (orig, funName) => `${orig};${expose('lib.paraglide', 'setLocale', funName)}`,
 			},
 		},
@@ -29,8 +30,8 @@ export const exposeLibraries = (): Patch[] => {
 			name: 'exposeSonner',
 			find: 'backend.wplace.live',
 			replace: {
-				match: /([a-zA-Z_$][a-zA-Z0-9_$]*)=Object\.assign.*?getActiveToasts.*/,
-				replace: (orig, sonnerVar) => `${orig};${expose('lib', 'sonner', sonnerVar)}`,
+				match: /([a-zA-Z_$][\w$]*)=Object\.assign.*?getActiveToasts.*/,
+				replace: (orig, sonnerVar) => `${orig};${expose('lib.sonner', 'toast', sonnerVar)}`,
 			},
 		},
 		// maplibre
@@ -38,7 +39,7 @@ export const exposeLibraries = (): Patch[] => {
 			name: 'exposeMapLibre',
 			find: 'MapLibre GL JS',
 			replace: {
-				match: /new ([a-zA-Z_$][a-zA-Z0-9_$]*)\.Map\(.*?}\);/,
+				match: /new ([a-zA-Z_$][\w$]*)\.Map\(.*?}\);/,
 				replace: (orig, mapLibreVar) => `${orig}${expose('lib', 'maplibre', mapLibreVar)};`,
 			},
 		},

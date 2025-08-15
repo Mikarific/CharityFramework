@@ -7,6 +7,7 @@ import jsonPlugin from '@rollup/plugin-json';
 import resolvePlugin from '@rollup/plugin-node-resolve';
 import replacePlugin from '@rollup/plugin-replace';
 import userscript from 'rollup-plugin-userscript';
+import postcssPlugin from 'rollup-plugin-postcss';
 import terserPlugin from '@rollup/plugin-terser';
 
 import { readPackageUp } from 'read-package-up';
@@ -14,19 +15,17 @@ const { packageJson } = await readPackageUp();
 
 const extensions = ['.ts', '.tsx', '.mjs', '.js', '.jsx'];
 
-const wrapInScriptElement = () => {
-  return {
-    name: 'wrap-in-script-element',
-    renderChunk(code) {
-      return `const elem = document.createElement('script');elem.textContent = \`window.stop();(\${(async () => {${code}}).toString()})();\`;document.documentElement.appendChild(elem);`
-    },
-  };
-};
-
 export default defineConfig([
 	{
 		input: 'src/index.ts',
 		plugins: [
+			postcssPlugin({
+				inject: false,
+				minimize: true,
+				modules: {
+					generateScopedName: 'wpf-[hash:base64:6]',
+				},
+			}),
 			babelPlugin({
 				babelHelpers: 'runtime',
 				plugins: [
@@ -50,7 +49,7 @@ export default defineConfig([
 			resolvePlugin({ browser: false, extensions }),
 			commonjsPlugin(),
 			jsonPlugin(),
-			wrapInScriptElement(),
+			pageExecution(),
 			terserPlugin(true),
 			userscript((meta) =>
 				meta
@@ -80,3 +79,12 @@ function defineExternal(externals) {
 		return id === pattern || id.startsWith(pattern + '/');
 	});
 }
+
+function pageExecution() {
+	return {
+		name: 'pageExecution',
+		renderChunk(code) {
+			return `unsafeWindow.GM=GM;const s=document.createElement('script');s.textContent=\`(\${(()=>{const GM=window.GM;delete window.GM;${code}}).toString()})();\`;document.documentElement.appendChild(s);`
+		},
+	};
+};

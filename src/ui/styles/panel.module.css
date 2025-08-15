@@ -1,0 +1,26 @@
+:host {
+	all: initial;
+}
+
+.wrapper {
+	position: fixed;
+	z-index: 10000;
+	cursor: grab;
+}
+
+.grabbing {
+	cursor: grabbing;
+}
+
+.body {
+	position: relative;
+	display: block;
+	width: min(600px, 50vw);
+	height: min(600px, 50vh);
+	min-width: 300px;
+	min-height: 300px;
+	padding: 8px;
+	word-break: break-word;
+	background: #2a303c;
+	border: 3px solid #1f242d;
+}

@@ -69,8 +69,12 @@ declare global {
 				seasons: { tileSize: number; zoom: number }[];
 				user: User;
 			};
-			plugins: Plugin[];
-			registerPlugin: (plugin: Plugin) => void;
+			internal: {
+				plugins: Plugin[];
+			};
+			plugin: {
+				register: (plugin: Plugin) => void;
+			};
 		};
 		esmsInitOptions?: {
 			shimMode?: boolean;

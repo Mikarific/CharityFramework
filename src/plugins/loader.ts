@@ -1,16 +1,25 @@
 import { Plugin, PluginState } from '.';
+import { GM_fetch } from '../utils/fetch';
+import { defineGlobalPath, defineHiddenPath } from '../utils/global';
 
-const PLUGIN_STATES_KEY = 'wpf.plugins';
+const PLUGIN_STATES_KEY = 'WPF.plugins';
 
 export const loadPlugins = async () => {
-	Object.defineProperty(window.WPF, 'plugins', { configurable: false, enumerable: true, writable: false, value: [] });
+	defineHiddenPath(window.WPF, 'internal');
+	Object.defineProperty(window.WPF.internal, 'plugins', {
+		configurable: false,
+		enumerable: true,
+		writable: false,
+		value: [],
+	});
 
-	Object.defineProperty(window.WPF, 'registerPlugin', {
+	defineGlobalPath(window.WPF, 'plugin');
+	Object.defineProperty(window.WPF.plugin, 'register', {
 		configurable: false,
 		enumerable: true,
 		writable: false,
 		value: (plugin: Plugin) => {
-			window.WPF.plugins.push(plugin);
+			window.WPF.internal.plugins.push(plugin);
 			console.log('[WPF]', 'registered plugin', plugin.id, `(${plugin.version})`);
 		},
 	});
@@ -21,18 +30,16 @@ export const loadPlugins = async () => {
 		if (!state.enabled) continue;
 		const index = pluginStates.indexOf(state);
 		try {
-			const res = await fetch(state.url + '?' + Date.now());
-			if (!res.ok) {
+			const res = await GM_fetch({ method: 'GET', url: state.url + '?' + Date.now() });
+			if (res.status !== 200) {
 				console.warn('[WPF] plugin url', state.url, `failed to load, status=${res.status}`);
 				continue;
 			}
 
-			const code = await res.text();
+			const prevLength = window.WPF.internal.plugins.length;
+			eval(res.responseText);
 
-			const prevLength = window.WPF.plugins.length;
-			eval(code);
-
-			if (prevLength === window.WPF.plugins.length) {
+			if (prevLength === window.WPF.internal.plugins.length) {
 				console.warn('[WPF]', 'plugin url', state.url, 'never registered a plugin');
 				state.error = 'never registered a plugin';
 				continue;
