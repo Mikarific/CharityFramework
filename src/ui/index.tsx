@@ -4,9 +4,9 @@ import { createPanel } from './panel';
 import { stylesheet as panelCss } from './styles/panel.module.css';
 
 export function init() {
-	document.addEventListener('wpf-right-sidebar', (sidebar: CustomEvent) => createIcon(sidebar.detail));
+	document.addEventListener('charity-right-sidebar', (sidebar: CustomEvent) => createIcon(sidebar.detail));
 
-	const host = document.createElement('wpf-' + Math.random().toString(36).slice(2, 8));
+	const host = document.createElement('charity-' + Math.random().toString(36).slice(2, 8));
 	const shadowRoot = host.attachShadow({ mode: 'open' });
 
 	const panelStyles = document.createElement('style');

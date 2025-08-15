@@ -40,12 +40,12 @@ window.stop();
 		},
 	});
 
-	defineGlobalPath(window, 'WPF');
+	defineGlobalPath(window, 'charity');
 	await loadPlugins();
 
 	const patches: Patch[] = [
 		...builtinPatches(),
-		...window.WPF.internal.plugins
+		...window.charity.internal.plugins
 			.map((plugin) =>
 				plugin.patches.map((patch) => ({
 					...patch,
@@ -73,16 +73,16 @@ window.stop();
 					if (patch.disable) continue;
 
 					if (!sourceStr.includes(patch.find)) continue;
-					console.log(`[WPF] patching ${url} with patch ${patch.name}`);
+					console.log(`[Charity] patching ${url} with patch ${patch.name}`);
 
 					const replaced = sourceStr.replace(patch.replace.match, patch.replace.replace);
 
 					if (replaced === sourceStr) {
-						console.warn('[WPF] patch ' + patch.name + ' made no changes to ' + url + ' even though it matched');
+						console.warn('[Charity] patch ' + patch.name + ' made no changes to ' + url + ' even though it matched');
 						continue;
 					}
 
-					console.debug('[WPF]', 'new', url, 'after patch', patch.name, replaced);
+					console.debug('[Charity]', 'new', url, 'after patch', patch.name, replaced);
 					sourceStr = replaced;
 				}
 				src.source = sourceStr;
@@ -110,7 +110,7 @@ window.stop();
 		configurable: true,
 	});
 
-	for (const plugin of window.WPF.internal.plugins) {
+	for (const plugin of window.charity.internal.plugins) {
 		await plugin.load();
 	}
 })();

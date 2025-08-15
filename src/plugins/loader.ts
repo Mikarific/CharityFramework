@@ -2,25 +2,25 @@ import { Plugin, PluginState } from '.';
 import { GM_fetch } from '../utils/fetch';
 import { defineGlobalPath, defineHiddenPath } from '../utils/global';
 
-const PLUGIN_STATES_KEY = 'WPF.plugins';
+const PLUGIN_STATES_KEY = 'charity.plugins';
 
 export const loadPlugins = async () => {
-	defineHiddenPath(window.WPF, 'internal');
-	Object.defineProperty(window.WPF.internal, 'plugins', {
+	defineHiddenPath(window.charity, 'internal');
+	Object.defineProperty(window.charity.internal, 'plugins', {
 		configurable: false,
 		enumerable: true,
 		writable: false,
 		value: [],
 	});
 
-	defineGlobalPath(window.WPF, 'plugin');
-	Object.defineProperty(window.WPF.plugin, 'register', {
+	defineGlobalPath(window.charity, 'plugin');
+	Object.defineProperty(window.charity.plugin, 'register', {
 		configurable: false,
 		enumerable: true,
 		writable: false,
 		value: (plugin: Plugin) => {
-			window.WPF.internal.plugins.push(plugin);
-			console.log('[WPF]', 'registered plugin', plugin.id, `(${plugin.version})`);
+			window.charity.internal.plugins.push(plugin);
+			console.log('[Charity]', 'registered plugin', plugin.id, `(${plugin.version})`);
 		},
 	});
 
@@ -32,15 +32,15 @@ export const loadPlugins = async () => {
 		try {
 			const res = await GM_fetch({ method: 'GET', url: state.url + '?' + Date.now() });
 			if (res.status !== 200) {
-				console.warn('[WPF] plugin url', state.url, `failed to load, status=${res.status}`);
+				console.warn('[Charity] plugin url', state.url, `failed to load, status=${res.status}`);
 				continue;
 			}
 
-			const prevLength = window.WPF.internal.plugins.length;
+			const prevLength = window.charity.internal.plugins.length;
 			eval(res.responseText);
 
-			if (prevLength === window.WPF.internal.plugins.length) {
-				console.warn('[WPF]', 'plugin url', state.url, 'never registered a plugin');
+			if (prevLength === window.charity.internal.plugins.length) {
+				console.warn('[Charity]', 'plugin url', state.url, 'never registered a plugin');
 				state.error = 'never registered a plugin';
 				continue;
 			}

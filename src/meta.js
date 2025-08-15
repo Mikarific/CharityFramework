@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        Wplace Framework
+// @name        Charity Framework
 // @namespace   mikarific.com
 // @description Framework for hooking into Wplace.
 // @version     process.env.VERSION

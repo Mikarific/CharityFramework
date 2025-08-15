@@ -3,10 +3,10 @@ import { Patch } from '..';
 import { defineGlobalPath } from '../../utils/global';
 
 export const exposeLibraries = (): Patch[] => {
-	defineGlobalPath(window.WPF, 'lib');
+	defineGlobalPath(window.charity, 'lib');
 
-	defineGlobalPath(window.WPF.lib, 'paraglide');
-	defineGlobalPath(window.WPF.lib, 'sonner');
+	defineGlobalPath(window.charity.lib, 'paraglide');
+	defineGlobalPath(window.charity.lib, 'sonner');
 	return [
 		// paraglide
 		{

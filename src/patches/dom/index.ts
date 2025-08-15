@@ -9,7 +9,7 @@ export const domEvents = (): Patch[] => {
 				match:
 					/[a-zA-Z_$][\w$]*=[a-zA-Z_$][\w$]*=>{var ([a-zA-Z_$][\w$]*)=[a-zA-Z_$][\w$]*\(\)[^}]*?;(?=[^}]*?shop-profile-picture)/,
 				replace: (orig, elem) =>
-					`${orig};document.dispatchEvent(new CustomEvent('wpf-right-sidebar',{detail:${elem}}));`,
+					`${orig};document.dispatchEvent(new CustomEvent('charity-right-sidebar',{detail:${elem}}));`,
 			},
 		},
 	];

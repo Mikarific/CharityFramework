@@ -23,7 +23,7 @@ export default defineConfig([
 				inject: false,
 				minimize: true,
 				modules: {
-					generateScopedName: 'wpf-[hash:base64:6]',
+					generateScopedName: 'charity-[hash:base64:6]',
 				},
 			}),
 			babelPlugin({
@@ -61,7 +61,7 @@ export default defineConfig([
 	external: defineExternal(['https://esm.sh/es-module-shims']),
 	output: {
 		format: 'iife',
-		file: `dist/WPlaceFramework.user.js`,
+		file: `dist/CharityFramework.user.js`,
 		indent: false,
 		strict: false,
 	},

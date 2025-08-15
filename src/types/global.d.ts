@@ -50,7 +50,7 @@ declare global {
 	}
 
 	interface Window {
-		WPF: {
+		charity: {
 			lib: {
 				maplibre: typeof maplibregl;
 				paraglide: {

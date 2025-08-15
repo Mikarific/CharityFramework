@@ -3,7 +3,7 @@ import { Patch } from '..';
 import { defineGlobalPath } from '../../utils/global';
 
 export const exposeGame = (): Patch[] => {
-	defineGlobalPath(window.WPF, 'game');
+	defineGlobalPath(window.charity, 'game');
 	return [
 		{
 			name: 'exposeGameData',
