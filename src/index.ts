@@ -111,6 +111,6 @@ window.stop();
 	});
 
 	for (const plugin of window.charity.internal.plugins) {
-		await plugin.def.load();
+		await plugin.def.load(plugin);
 	}
 })();

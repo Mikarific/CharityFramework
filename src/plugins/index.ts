@@ -21,7 +21,7 @@ export interface PluginManifest {
 
 export interface PluginDefinition {
 	patches: Patch[];
-	load: () => void;
+	load: (plugin: Plugin) => void;
 }
 
 export interface Plugin {
