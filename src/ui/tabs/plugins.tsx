@@ -1,5 +1,5 @@
+import { addPlugin } from '../../plugins/loader';
 import styles from '../styles/panel.module.css';
-import { PluginState } from '../../plugins';
 
 let input: HTMLInputElement;
 
@@ -14,15 +14,12 @@ export function Plugins() {
 					onMouseDown={(e) => e.stopPropagation()}
 				/>
 				<button
-					onClick={() => {
-						const plugins: PluginState[] = JSON.parse(localStorage.getItem('charity.plugins'));
-						plugins.push({
-							url: input.value,
-							enabled: true,
-							error: null,
-						});
-						localStorage.setItem('charity.plugins', JSON.stringify(plugins));
-						location.reload();
+					onClick={async () => {
+						try {
+							await addPlugin(input.value);
+						} catch (err) {
+							console.error('[Charity] Failed to add plugin!', err);
+						}
 					}}
 					onMouseDown={(e) => e.stopPropagation()}
 				>
