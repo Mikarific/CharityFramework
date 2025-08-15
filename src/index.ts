@@ -1,4 +1,6 @@
 import './meta.js?userscript-metadata';
+import * as ui from './ui';
+
 import { builtinPatches, Patch } from './patches';
 import { loadPlugins } from './plugins/loader';
 import { defineGlobalPath } from './utils/global';
@@ -52,6 +54,8 @@ import { defineGlobalPath } from './utils/global';
 			.flat(1),
 	];
 
+	ui.init();
+
 	window.esmsInitOptions = {
 		shimMode: true,
 		nativePassthrough: false,
@@ -80,9 +84,6 @@ import { defineGlobalPath } from './utils/global';
 					console.debug('[WPF]', 'new', url, 'after patch', patch.name, replaced);
 					sourceStr = replaced;
 				}
-
-				// sourceStr += `console.log("Hooked: ${url}");`;
-
 				src.source = sourceStr;
 			}
 			return src;

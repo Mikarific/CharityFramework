@@ -1,16 +1,18 @@
 import { isAbsolute, relative, resolve } from 'path';
 import { defineConfig } from 'rollup';
 
+import babelPlugin from '@rollup/plugin-babel';
 import commonjsPlugin from '@rollup/plugin-commonjs';
 import jsonPlugin from '@rollup/plugin-json';
 import resolvePlugin from '@rollup/plugin-node-resolve';
 import replacePlugin from '@rollup/plugin-replace';
-import typescript from '@rollup/plugin-typescript';
 import userscript from 'rollup-plugin-userscript';
+import terserPlugin from '@rollup/plugin-terser';
 
 import { readPackageUp } from 'read-package-up';
 const { packageJson } = await readPackageUp();
 
+const extensions = ['.ts', '.tsx', '.mjs', '.js', '.jsx'];
 
 const wrapInScriptElement = () => {
   return {
@@ -21,22 +23,35 @@ const wrapInScriptElement = () => {
   };
 };
 
-
 export default defineConfig([
 	{
 		input: 'src/index.ts',
 		plugins: [
+			babelPlugin({
+				babelHelpers: 'runtime',
+				plugins: [
+					[
+						import.meta.resolve('@babel/plugin-transform-runtime'),
+						{
+							useESModules: true,
+							version: '^7.5.0'
+						}
+					]
+				],
+				exclude: 'node_modules/**',
+				extensions
+			}),
 			replacePlugin({
 				values: {
 					'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
 				},
 				preventAssignment: true,
 			}),
-			resolvePlugin({ browser: false, extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx'] }),
+			resolvePlugin({ browser: false, extensions }),
 			commonjsPlugin(),
 			jsonPlugin(),
-			typescript(),
 			wrapInScriptElement(),
+			terserPlugin(true),
 			userscript((meta) =>
 				meta
 			.replace('process.env.AUTHOR', packageJson.author.name)
