@@ -8,7 +8,7 @@ const PLUGIN_STATES_KEY = 'charity.plugins';
 export const addPlugin = async (url: string) => {
 	const manifest = await fetchManifest(url);
 	const pluginStates: PluginState[] = JSON.parse(localStorage.getItem(PLUGIN_STATES_KEY));
-
+	if (pluginStates.find((s) => s.url === url || s.id === manifest.id)) throw new Error('plugin already installed');
 	pluginStates.push({ id: manifest.id, url, enabled: true, error: null });
 	localStorage.setItem(PLUGIN_STATES_KEY, JSON.stringify(pluginStates));
 	location.reload();
