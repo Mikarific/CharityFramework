@@ -1,6 +1,6 @@
 import { For } from 'solid-js';
 
-import { addPlugin } from '../../plugins/loader';
+import { addPlugin, removePlugin } from '../../plugins/loader';
 import styles from '../styles/panel.module.css';
 
 let input: HTMLInputElement;
@@ -36,7 +36,14 @@ export function Plugins() {
 								<div class={styles.pluginName}>
 									{plugin.manifest.name}&nbsp;<span class={styles.gray}>by {plugin.manifest.authors.join(', ')}</span>
 								</div>
-								<button onMouseDown={(e) => e.stopPropagation()}>Remove</button>
+								<button
+									onClick={() => {
+										removePlugin(plugin.manifest.id);
+									}}
+									onMouseDown={(e) => e.stopPropagation()}
+								>
+									Remove
+								</button>
 							</div>
 						);
 					}}
