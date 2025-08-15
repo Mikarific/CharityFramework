@@ -91,7 +91,7 @@
 .version,
 .author {
 	display: flex;
-	gap: 28px;
+	gap: 24px;
 	background-color: #2a303c;
 	padding: 8px;
 	border: 3px solid #1f242d;

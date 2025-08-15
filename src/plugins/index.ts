@@ -63,7 +63,6 @@ export const validatePluginDefintion = (definition: PluginDefinition) => {
 
 export const fetchManifest = async (url: string) => {
 	if (!url.endsWith('/')) url += '/';
-	console.log(url + 'manifest.json?' + Date.now());
 	const manifestRes = await GM_fetch({ method: 'GET', url: url + 'manifest.json?' + Date.now() });
 
 	if (manifestRes.status !== 200) {
@@ -73,14 +72,14 @@ export const fetchManifest = async (url: string) => {
 	const manifest: PluginManifest = JSON.parse(manifestRes.responseText);
 	validateManifest(manifest);
 
-	if (!semver.satisfies(GM.info.script.version, manifest.versions.framework)) {
+	if (!semver.satisfies('process.env.VERSION', manifest.versions.framework)) {
 		throw new Error(
 			'plugin ' +
 				manifest.id +
 				' wants framework version ' +
 				manifest.versions.framework +
 				' but the present framework version is only ' +
-				GM.info.script.version +
+				'process.env.VERSION' +
 				'! please update your Charity Framework version',
 		);
 	}
