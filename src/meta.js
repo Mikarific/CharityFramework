@@ -7,5 +7,6 @@
 // @match       https://wplace.live/*
 // @run-at      document-start
 // @license     process.env.LICENSE
+// @inject-into page
 // @grant       unsafeWindow
 // ==/UserScript==

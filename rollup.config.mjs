@@ -84,7 +84,7 @@ function pageExecution() {
 	return {
 		name: 'pageExecution',
 		renderChunk(code) {
-			return `unsafeWindow.GM=GM;const s=document.createElement('script');s.textContent=\`(\${(()=>{const GM=window.GM;delete window.GM;${code}}).toString()})();\`;document.documentElement.appendChild(s);`
+			return `if(GM.info.scriptHandler==='Greasemonkey'){alert('Charity Framework does not support Greasemonkey! Try FireMonkey instead!');}else{unsafeWindow.GM=GM;const s=document.createElement('script');s.textContent=\`(\${(()=>{const GM=window.GM;delete window.GM;${code}}).toString()})();\`;document.documentElement.appendChild(s);}`
 		},
 	};
 };

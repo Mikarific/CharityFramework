@@ -14,13 +14,128 @@
 
 .body {
 	position: relative;
-	display: block;
-	width: min(600px, 50vw);
-	height: min(600px, 50vh);
-	min-width: 300px;
-	min-height: 300px;
-	padding: 8px;
-	word-break: break-word;
-	background: #2a303c;
+	display: flex;
+	flex-direction: column;
+	width: min(1000px, 50vw);
+	height: min(1000px, 50vh);
+	min-width: 500px;
+	min-height: 500px;
+	background: #242933;
 	border: 3px solid #1f242d;
+	font-family: 'Sevenish', serif;
+	color: #fff;
+}
+
+.nav {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 64px;
+	gap: 32px;
+	background-color: #2a303c;
+	border-bottom: 3px solid #1f242d;
+}
+
+.nav > a {
+	cursor: pointer;
+	transform: perspective(1px);
+	font-size: 24px;
+	line-height: 28px;
+	margin: 0;
+	user-select: none;
+}
+
+.nav > a:hover {
+	text-decoration: underline;
+}
+
+.about {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 96px;
+	padding: 8px;
+	gap: 8px;
+}
+
+.logo {
+	height: calc(16px * 5);
+	image-rendering: pixelated;
+}
+
+.description {
+	transform: perspective(1px);
+	font-size: 16px;
+	line-height: 20px;
+	margin: 0;
+}
+
+.aboutInfo {
+	display: flex;
+	gap: 8px;
+}
+
+.version,
+.author {
+	display: flex;
+	gap: 32px;
+	background-color: #2a303c;
+	padding: 8px;
+}
+
+.version > p,
+.author > p {
+	transform: perspective(1px);
+	font-size: 16px;
+	line-height: 20px;
+	margin: 0;
+}
+
+.gray {
+	color: #94a3b8;
+}
+
+.plugins {
+	padding: 8px;
+}
+
+.addPlugin {
+	display: flex;
+	gap: 8px;
+}
+
+.addPlugin > input {
+	flex-grow: 1;
+	min-width: 100px;
+	background-color: #2a303c;
+	font-family: 'Sevenish', serif;
+	color: #fff;
+	border: 3px solid #1f242d;
+	font-size: 16px;
+	line-height: 20px;
+	height: 32px;
+	padding: 12px;
+}
+
+.addPlugin > input:focus {
+	outline: none;
+	border: 3px solid #a6adba;
+}
+
+.addPlugin > button {
+	background-color: #65a30d;
+	font-family: 'Sevenish', serif;
+	color: #bef264;
+	border: 3px solid #3f6212;
+	font-size: 16px;
+	line-height: 20px;
+	min-width: 64px;
+	cursor: pointer;
+}
+
+.addPlugin > button:hover {
+	text-decoration: underline;
+	border: 3px solid #a3e635;
 }

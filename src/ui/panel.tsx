@@ -1,14 +1,41 @@
 import { render } from 'solid-js/web';
+import { createSignal, Show } from 'solid-js';
 
 import styles from './styles/panel.module.css';
+import { Plugins } from './tabs/plugins';
+import { About } from './tabs/about';
 
 let wrapper: HTMLDivElement;
 let body: HTMLDivElement;
 
 function Panel() {
+	const [getTab, setTab] = createSignal<'about' | 'plugins'>('about');
 	return (
 		<div ref={wrapper} class={styles.wrapper} onMouseDown={drag}>
-			<div ref={body} class={styles.body}></div>
+			<div ref={body} class={styles.body}>
+				<nav class={styles.nav}>
+					<a
+						style={getTab() === 'about' ? 'text-decoration: underline' : ''}
+						onClick={() => setTab('about')}
+						onMouseDown={(e) => e.stopPropagation()}
+					>
+						About
+					</a>
+					<a
+						style={getTab() === 'plugins' ? 'text-decoration: underline' : ''}
+						onClick={() => setTab('plugins')}
+						onMouseDown={(e) => e.stopPropagation()}
+					>
+						Plugins
+					</a>
+				</nav>
+				<Show when={getTab() === 'about'}>
+					<About />
+				</Show>
+				<Show when={getTab() === 'plugins'}>
+					<Plugins />
+				</Show>
+			</div>
 		</div>
 	);
 }
