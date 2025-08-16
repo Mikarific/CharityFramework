@@ -131,6 +131,7 @@
 	flex-direction: column;
 	gap: 8px;
 	overflow-y: scroll;
+	max-height: 336px;
 }
 
 .addPlugin {
