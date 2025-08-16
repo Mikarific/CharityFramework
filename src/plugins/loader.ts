@@ -50,38 +50,42 @@ export const loadPlugins = async () => {
 
 	const pluginStates: PluginState[] = JSON.parse(localStorage.getItem(PLUGIN_STATES_KEY) ?? '[]');
 
-	for (const state of pluginStates) {
-		if (!state.enabled) continue;
-		const index = pluginStates.indexOf(state);
-		try {
-			const url = state.url.endsWith('/') ? state.url : state.url + '/';
-			const manifest = await fetchManifest(url);
+	await Promise.all(
+		pluginStates
+			.filter((s) => s.enabled)
+			.map(async (state) => {
+				if (!state.enabled) return;
+				const index = pluginStates.indexOf(state);
+				try {
+					const url = state.url.endsWith('/') ? state.url : state.url + '/';
+					const manifest = await fetchManifest(url);
 
-			if (manifest.id !== state.id) {
-				console.warn(
-					'[Charity]',
-					'plugin at url',
-					url,
-					'id changed from',
-					state.id,
-					'to',
-					manifest.id,
-					'updating state',
-				);
-				state.id = manifest.id;
-			}
+					if (manifest.id !== state.id) {
+						console.warn(
+							'[Charity]',
+							'plugin at url',
+							url,
+							'id changed from',
+							state.id,
+							'to',
+							manifest.id,
+							'updating state',
+						);
+						state.id = manifest.id;
+					}
 
-			await loadPlugin(url, manifest);
+					await loadPlugin(url, manifest);
 
-			state.error = null;
-		} catch (error) {
-			// state.enabled = false;
-			state.error = `${error}`;
-			console.error('[Charity]', 'plugin url', state.url, 'failed to load', error);
-		}
+					state.error = null;
+				} catch (error) {
+					// state.enabled = false;
+					state.error = `${error}`;
+					console.error('[Charity]', 'plugin url', state.url, 'failed to load', error);
+				}
 
-		pluginStates[index] = state;
-	}
+				pluginStates[index] = state;
+			}),
+	);
 
 	localStorage.setItem(PLUGIN_STATES_KEY, JSON.stringify(pluginStates));
 };
