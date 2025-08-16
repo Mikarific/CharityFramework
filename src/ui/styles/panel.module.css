@@ -124,6 +124,9 @@
 	flex-direction: column;
 	gap: 16px;
 	padding: 8px;
+	height: 100%;
+	flex: 1;
+	overflow: auto;
 }
 
 .pluginList {
@@ -131,7 +134,7 @@
 	flex-direction: column;
 	gap: 8px;
 	overflow-y: scroll;
-	max-height: 336px;
+	height: min-content;
 }
 
 .addPlugin {
