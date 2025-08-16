@@ -112,7 +112,7 @@
 }
 
 .red {
-		color: var(--red);
+	color: var(--red);
 }
 
 .bgRed {
@@ -165,7 +165,6 @@
 	flex-direction: row;
 	gap: 8px;
 }
-
 
 .pluginName {
 	flex-grow: 1;

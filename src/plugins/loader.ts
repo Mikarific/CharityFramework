@@ -1,6 +1,5 @@
 import { fetchManifest, Plugin, PluginDefinition, PluginManifest, PluginState, validatePluginDefintion } from '.';
-import { GM_fetch } from '../utils/fetch';
-import { defineHiddenPath } from '../utils/global';
+import { fetchWithoutCORS } from '../utils/gm';
 
 const PLUGIN_STATES_KEY = 'charity.plugins';
 
@@ -24,12 +23,12 @@ export const setPluginStates = (states: PluginState[]) =>
 	localStorage.setItem(PLUGIN_STATES_KEY, JSON.stringify(states));
 
 export const loadPlugin = async (url: string, manifest: PluginManifest) => {
-	const res = await GM_fetch({ method: 'GET', url: url + 'index.js?' + Date.now() });
-	if (res.status !== 200) {
+	const res = await fetchWithoutCORS(url + 'index.js?' + Date.now());
+	if (!res.ok) {
 		throw new Error('failed to fetch bundle status=' + res.status);
 	}
 
-	const code = res.responseText;
+	const code = await res.text();
 
 	const def: PluginDefinition = await eval(code);
 	validatePluginDefintion(def);
@@ -40,7 +39,6 @@ export const loadPlugin = async (url: string, manifest: PluginManifest) => {
 };
 
 export const loadPlugins = async () => {
-	defineHiddenPath(window.charity, 'internal');
 	Object.defineProperty(window.charity.internal, 'plugins', {
 		configurable: false,
 		enumerable: true,

@@ -15,5 +15,12 @@
 // @supportURL  https://discord.gg/anBdazHcrH
 // @inject-into page
 // @connect     *
+// @resource    logo https://raw.githubusercontent.com/Mikarific/CharityFramework/main/assets/logo.png
+// @grant       GM.getValue
+// @grant       GM.setValue
+// @grant       GM.deleteValue
+// @grant       GM.listValues
+// @grant       GM.getResourceUrl
+// @grant       GM.xmlHttpRequest
 // @grant       unsafeWindow
 // ==/UserScript==

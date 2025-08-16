@@ -9,14 +9,11 @@ export function About() {
 			<div class={styles.aboutInfo}>
 				<div class={styles.version}>
 					<p>Version</p>
-					<p class={styles.gray}>
-						<span>v</span>
-						{'process.env.VERSION'}
-					</p>
+					<p class={styles.gray}>v{window.charity.internal.info.version}</p>
 				</div>
 				<div class={styles.author}>
 					<p>Authors</p>
-					<p class={styles.gray}>{'process.env.AUTHOR'}</p>
+					<p class={styles.gray}>{window.charity.internal.info.author}</p>
 				</div>
 			</div>
 		</div>

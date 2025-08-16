@@ -3,7 +3,6 @@ import * as ui from './ui';
 
 import { builtinPatches, Patch } from './patches';
 import { loadPlugins } from './plugins/loader';
-import { defineGlobalPath } from './utils/global';
 
 window.stop();
 (async () => {
@@ -40,7 +39,6 @@ window.stop();
 		},
 	});
 
-	defineGlobalPath(window, 'charity');
 	await loadPlugins();
 
 	const patches: Patch[] = [

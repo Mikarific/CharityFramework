@@ -70,6 +70,7 @@ declare global {
 				user: User;
 			};
 			internal: {
+				info: VMScriptGMInfoScriptMeta;
 				plugins: Plugin[];
 			};
 			plugin: {

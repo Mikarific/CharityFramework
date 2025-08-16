@@ -7,7 +7,7 @@ import { stylesheet as panelCss } from './styles/panel.module.css';
 export function init() {
 	document.addEventListener('charity-right-sidebar', (sidebar: CustomEvent) => createIcon(sidebar.detail));
 
-	const host = document.createElement('charity-' + Math.random().toString(36).slice(2, 8));
+	const host = document.createElement(`charity-${Math.random().toString(36).slice(2, 8)}`);
 	const shadowRoot = host.attachShadow({ mode: 'open' });
 
 	const globalStyles = document.createElement('style');

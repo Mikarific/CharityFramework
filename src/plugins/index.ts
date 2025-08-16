@@ -1,6 +1,6 @@
 import semver from 'semver';
 import { Patch } from '../patches';
-import { GM_fetch } from '../utils/fetch';
+import { fetchWithoutCORS } from '../utils/gm';
 
 export interface PluginState {
 	id: string;
@@ -63,23 +63,23 @@ export const validatePluginDefintion = (definition: PluginDefinition) => {
 
 export const fetchManifest = async (url: string) => {
 	if (!url.endsWith('/')) url += '/';
-	const manifestRes = await GM_fetch({ method: 'GET', url: url + 'manifest.json?' + Date.now() });
+	const manifestRes = await fetchWithoutCORS(url + 'manifest.json?' + Date.now());
 
-	if (manifestRes.status !== 200) {
+	if (!manifestRes.ok) {
 		throw new Error('failed to fetch manifest status=' + manifestRes.status);
 	}
 
-	const manifest: PluginManifest = JSON.parse(manifestRes.responseText);
+	const manifest: PluginManifest = await manifestRes.json();
 	validateManifest(manifest);
 
-	if (!semver.satisfies('process.env.VERSION', manifest.versions.framework)) {
+	if (!semver.satisfies(window.charity.internal.info.version, manifest.versions.framework)) {
 		throw new Error(
 			'plugin ' +
 				manifest.id +
 				' wants framework version ' +
 				manifest.versions.framework +
 				' but the present framework version is only ' +
-				'process.env.VERSION' +
+				window.charity.internal.info.version +
 				'! please update your Charity Framework version',
 		);
 	}
