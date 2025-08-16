@@ -6,9 +6,7 @@ import styles from '../styles/panel.module.css';
 let input: HTMLInputElement;
 
 export function Plugins() {
-	console.log('hi');
 	const brokenPlugins = getPluginStates().filter((s) => s.enabled && s.error);
-	console.log('brokenPlugins', brokenPlugins);
 
 	return (
 		<div class={styles.plugins}>
