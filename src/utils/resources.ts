@@ -1,1 +1,7 @@
-export const logo = 'https://raw.githubusercontent.com/Mikarific/CharityFramework/main/assets/logo.png';
+import { getResourceUrl } from './gm';
+
+export const resources: { [key: string]: string } = {};
+
+export async function init() {
+	resources.logo = await getResourceUrl('logo');
+}

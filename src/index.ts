@@ -1,8 +1,8 @@
 import './meta.js?userscript-metadata';
-import * as ui from './ui';
-
 import { builtinPatches, Patch } from './patches';
 import { loadPlugins } from './plugins/loader';
+import * as resources from './utils/resources';
+import * as ui from './ui';
 import { executeDeepLink } from './deeplink';
 
 window.stop();
@@ -55,6 +55,7 @@ window.stop();
 			.flat(1),
 	];
 
+	await resources.init();
 	ui.init();
 
 	window.esmsInitOptions = {
