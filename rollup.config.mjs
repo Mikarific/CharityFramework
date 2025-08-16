@@ -54,21 +54,20 @@ export default defineConfig([
 			jsonPlugin(),
 			pageExecution(),
 			terserPlugin(true),
-			userscript((meta) =>
-				meta
-			.replace('process.env.AUTHOR', packageJson.author.name)
-			.replace('process.env.VERSION', packageJson.version)
-			.replace('process.env.LICENSE', packageJson.license),
-		),
-	],
-	external: defineExternal(['https://esm.sh/es-module-shims']),
-	output: {
-		format: 'iife',
-		file: `dist/CharityFramework.user.js`,
-		indent: false,
-		strict: false,
-	},
-}
+			userscript((meta) => meta
+				.replace('process.env.AUTHOR', packageJson.author.name)
+				.replace('process.env.VERSION', packageJson.version)
+				.replace('process.env.LICENSE', packageJson.license)
+			),
+		],
+		external: defineExternal(['https://esm.sh/es-module-shims']),
+		output: {
+			format: 'iife',
+			file: 'dist/CharityFramework.user.js',
+			indent: false,
+			strict: false,
+		},
+	}
 ]);
 
 function defineExternal(externals) {
