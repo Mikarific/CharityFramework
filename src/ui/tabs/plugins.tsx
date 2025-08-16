@@ -1,13 +1,37 @@
-import { For } from 'solid-js';
+import { createSignal, For, Show } from 'solid-js';
 
 import { addPlugin, getPluginStates, removePlugin } from '../../plugins/loader';
 import styles from '../styles/panel.module.css';
+import { Card, CardDescription, CardTitle } from '../components/card';
+import { DISCORD_SERVER_LINK } from '../../constants';
+import { Plugin, PluginState } from '../../plugins';
+import { Button } from '../components/button';
 
 let input: HTMLInputElement;
 
 export function Plugins() {
-	const brokenPlugins = getPluginStates().filter((s) => s.enabled && s.error);
+	const [getStates, setStates] = createSignal(getPluginStates());
+	const [getPlugins, setPlugins] = createSignal<(Plugin & { removed: boolean })[]>([]);
+	const [getBrokenPlugins, setBrokenPlugins] = createSignal<PluginState[]>([]);
+	const [getReloadRecomended, setReloadRecomended] = createSignal(false);
 
+	const refreshStates = () => {
+		setStates(getPluginStates());
+		setPlugins(
+			window.charity.internal.plugins.map((p) => ({
+				...p,
+				removed: !getPluginStates().find((s) => s.id === p.manifest.id),
+			})),
+		);
+		setBrokenPlugins(getStates().filter((s) => s.enabled && s.error));
+		setReloadRecomended(
+			!!getStates().find(
+				(s) => s.enabled && !s.error && !window.charity.internal.plugins.find((p) => p.manifest.id === s.id),
+			) || !!window.charity.internal.plugins.find((p) => !getStates().find((s) => s.id === p.manifest.id)),
+		);
+	};
+
+	refreshStates();
 	return (
 		<div class={styles.plugins}>
 			<div class={styles.addPlugin}>
@@ -17,53 +41,93 @@ export function Plugins() {
 					placeholder='Enter plugin URL here...'
 					onMouseDown={(e) => e.stopPropagation()}
 				/>
-				<button
+				<Button
 					onClick={async () => {
 						try {
 							await addPlugin(input.value);
+							refreshStates();
 						} catch (err) {
 							console.error('[Charity]', err);
 						}
 					}}
 					onMouseDown={(e) => e.stopPropagation()}
+					buttonStyle='green'
 				>
 					Add
-				</button>
+				</Button>
 			</div>
-			<div>
-				<For each={brokenPlugins}>
+			<Show when={getBrokenPlugins().length > 0}>
+				<Card style='error'>
+					<CardTitle>Some plugins failed to load</CardTitle>
+					<CardDescription>
+						Plugins can fail to load for various reasons, check your console for the error or ask for support in our{' '}
+						<a href={DISCORD_SERVER_LINK}>discord server</a>.
+					</CardDescription>
+				</Card>
+			</Show>
+			<Show when={getReloadRecomended()}>
+				<Card style='info'>
+					<CardDescription
+						style={{
+							'margin-bottom': '8px',
+						}}
+					>
+						Some plugins need you to reload the page from them to enable/disable, click the button below to do so.
+					</CardDescription>
+					<Button
+						style={{
+							width: '96px',
+							height: '32px',
+						}}
+						buttonStyle='green'
+						onClick={() => window.location.reload()}
+						onMouseDown={(e) => e.stopPropagation()}
+					>
+						Reload
+					</Button>
+				</Card>
+			</Show>
+			<div class={styles.pluginList}>
+				<For each={getBrokenPlugins()}>
 					{(brokenPlugin) => (
 						<div class={styles.plugin}>
-							<div class={`${styles.pluginName} ${styles.brokenPlugin}`}>
+							<div class={styles.pluginName}>
 								<span class={styles.gray}>{brokenPlugin.id}</span>&nbsp;
-								<span class={styles.red}>is broken, refresh and check console for error</span>
+								<span class={styles.red}>failed to load</span>
 							</div>
-							<button
+							<Button
 								onClick={() => {
 									removePlugin(brokenPlugin.id);
+									refreshStates();
 								}}
 								onMouseDown={(e) => e.stopPropagation()}
+								buttonStyle='red'
 							>
 								Remove
-							</button>
+							</Button>
 						</div>
 					)}
 				</For>
-				<For each={window.charity.internal.plugins}>
+				<For each={getPlugins()}>
 					{(plugin) => {
 						return (
 							<div class={styles.plugin}>
 								<div class={styles.pluginName}>
 									{plugin.manifest.name}&nbsp;<span class={styles.gray}>by {plugin.manifest.authors.join(', ')}</span>
+									{plugin.removed && <span class={styles.red}>&nbsp;(Removed)</span>}
 								</div>
-								<button
-									onClick={() => {
-										removePlugin(plugin.manifest.id);
-									}}
-									onMouseDown={(e) => e.stopPropagation()}
-								>
-									Remove
-								</button>
+								{!plugin.removed && (
+									<Button
+										onClick={() => {
+											removePlugin(plugin.manifest.id);
+											refreshStates();
+										}}
+										onMouseDown={(e) => e.stopPropagation()}
+										buttonStyle='red'
+									>
+										Remove
+									</Button>
+								)}
 							</div>
 						);
 					}}

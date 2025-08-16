@@ -11,14 +11,12 @@ export const addPlugin = async (url: string) => {
 	if (pluginStates.find((s) => s.url === url || s.id === manifest.id)) throw new Error('plugin already installed');
 	pluginStates.push({ id: manifest.id, url, enabled: true, error: null });
 	setPluginStates(pluginStates);
-	location.reload();
 };
 
 export const removePlugin = (id: string) => {
 	let pluginStates = getPluginStates();
 	pluginStates = pluginStates.filter((s) => s.id !== id);
 	setPluginStates(pluginStates);
-	location.reload();
 };
 
 export const getPluginStates = (): PluginState[] => JSON.parse(localStorage.getItem(PLUGIN_STATES_KEY));

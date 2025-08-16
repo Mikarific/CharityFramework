@@ -1,5 +1,6 @@
 :host {
 	all: initial;
+	--red: #f87171;
 }
 
 .wrapper {
@@ -43,6 +44,7 @@
 	line-height: 28px;
 	margin: 0;
 	user-select: none;
+	color: #fff;
 }
 
 .nav > a:hover {
@@ -110,7 +112,11 @@
 }
 
 .red {
-	color: #f87171;
+		color: var(--red);
+}
+
+.bgRed {
+	background-color: var(--red);
 }
 
 .plugins {
@@ -118,6 +124,13 @@
 	flex-direction: column;
 	gap: 16px;
 	padding: 8px;
+}
+
+.pluginList {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	overflow-y: scroll;
 }
 
 .addPlugin {
@@ -143,31 +156,12 @@
 	border: 3px solid #a6adba;
 }
 
-.addPlugin > button {
-	background-color: #65a30d;
-	font-family: 'Sevenish', serif;
-	color: #bef264;
-	border: 3px solid #3f6212;
-	font-size: 16px;
-	line-height: 20px;
-	cursor: pointer;
-	min-width: 96px;
-}
-
-.addPlugin > button:hover {
-	text-decoration: underline;
-	border: 3px solid #a3e635;
-}
-
 .plugin {
 	display: flex;
 	flex-direction: row;
 	gap: 8px;
 }
 
-.brokenPlugin {
-	background-color: #f87171;
-}
 
 .pluginName {
 	flex-grow: 1;
@@ -187,19 +181,71 @@
 	white-space: nowrap;
 }
 
-.plugin > button {
-	background-color: #ef4444;
+.card {
+	display: flex;
+	flex-direction: column;
+	padding: 16px;
+}
+
+.cardTitle {
+	display: inline-block;
+	margin: 0;
+	margin-bottom: 8px;
+	font-size: 16px;
+}
+
+.cardDescription {
+	display: inline-block;
+	margin: 0;
+}
+
+.cardStyleNormal {
+	background-color: #2a303c;
+	border: 3px solid #1f242d;
+}
+
+.cardStyleInfo {
+	background-color: rgba(180, 190, 254, 70%);
+	border: 3px solid #1f242d;
+}
+
+.cardStyleError {
+	background-color: rgba(248, 113, 113, 70%);
+	border: 3px solid #1f242d;
+}
+
+.button {
 	font-family: 'Sevenish', serif;
-	color: #fca5a5;
-	border: 3px solid #991b1b;
 	font-size: 16px;
 	line-height: 20px;
-	min-width: 64px;
 	cursor: pointer;
 	min-width: 96px;
 }
 
-.plugin > button:hover {
+.button:hover {
 	text-decoration: underline;
+}
+
+.buttonStyleGreen {
+	background-color: #65a30d;
+	color: #bef264;
+	border: 3px solid #3f6212;
+}
+
+.buttonStyleGreen:hover {
+	border: 3px solid #a3e635;
+}
+
+.buttonStyleRed {
+	background-color: #ef4444;
+	color: #fca5a5;
+	border: 3px solid #991b1b;
+}
+
+.buttonStyleRed:hover {
 	border: 3px solid #f87171;
+}
+
+a {
+	color: #89b4fa;
 }
