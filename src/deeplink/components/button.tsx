@@ -1,5 +1,5 @@
 import { JSX } from 'solid-js/jsx-runtime';
-import styles from '../styles/panel.module.css';
+import styles from '../styles/deeplink.module.css';
 
 type ButtonStyle = 'green' | 'red';
 

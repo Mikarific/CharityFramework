@@ -3,9 +3,11 @@ import * as ui from './ui';
 
 import { builtinPatches, Patch } from './patches';
 import { loadPlugins } from './plugins/loader';
+import { executeDeepLink } from './deeplink';
 
 window.stop();
 (async () => {
+	if (executeDeepLink()) return;
 	const unparsedHtml = await (await fetch(location.href)).text();
 	const parsedHtml = new DOMParser().parseFromString(unparsedHtml, 'text/html');
 	for (const attr of document.firstElementChild.attributes) {
