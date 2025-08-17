@@ -9,13 +9,13 @@
 		"node": ">=18"
 	},
 	"scripts": {
-		"dev": "rollup -wc",
+		"dev": "cross-env NODE_ENV=development rollup -wc",
 		"clean": "del-cli dist",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint",
 		"ci": "run-s lint",
-		"build:js": "rollup -c",
-		"build": "cross-env NODE_ENV=production run-s ci clean build:js"
+		"build:js": "cross-env NODE_ENV=production rollup -c",
+		"build": "run-s ci clean build:js"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.28.3",
