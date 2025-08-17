@@ -5,7 +5,7 @@ export function About() {
 	return (
 		<div class={styles.about}>
 			<img src={resources.logo} class={styles.logo}></img>
-			<p class={styles.description}>A plugin loader for wplace.live.</p>
+			<p class={styles.description}>{window.charity.internal.info.description}</p>
 			<div class={styles.aboutInfo}>
 				<div class={styles.version}>
 					<p>Version</p>
