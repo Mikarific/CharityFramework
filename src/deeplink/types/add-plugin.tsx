@@ -15,9 +15,9 @@ export function AddPlugin() {
 
 	createEffect(() => {
 		fetchManifest(pluginUrl)
-			.then((m) => {
+			.then(async (m) => {
 				setManifest(m);
-				setAlreadyInstalled(!!getPluginStates().find((s) => s.id === m.id || s.url === pluginUrl));
+				setAlreadyInstalled(!!(await getPluginStates()).find((s) => s.id === m.id || s.url === pluginUrl));
 			})
 			.catch((error) => {
 				console.error('[Charity] error while fetching manifest for deeplink', error);
@@ -67,8 +67,13 @@ export function AddPlugin() {
 
 			<Show when={getManifest() && !hasError() && !isAlreadyInstalled()}>
 				<p class={styles.pixel}>
-					Are you sure you want to install <span class={styles.gray}>{getManifest().name}</span> by{' '}
-					<span class={styles.gray}>{getManifest().authors.join(',, ')}</span> from {pluginUrl}?
+					<span class={styles.gray}>Are you sure you want to install </span>
+					{getManifest().name}
+					<span class={styles.gray}> by </span>
+					{getManifest().authors.join(', ')}
+					<span class={styles.gray}> from </span>
+					{pluginUrl}
+					<span class={styles.gray}>?</span>
 				</p>
 				<div
 					style={{

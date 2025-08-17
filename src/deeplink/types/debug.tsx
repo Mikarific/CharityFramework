@@ -1,11 +1,20 @@
+import { createSignal, onMount } from 'solid-js';
 import { render } from 'solid-js/web';
+
 import { DeepLinkType } from '..';
 import { DeeplinkLayout } from '../components/deeplink-layout';
 import styles from '../styles/deeplink.module.css';
 import { getPluginStates, setPluginStates } from '../../plugins/loader';
 import { Button } from '../components/button';
+import { PluginState } from '../../plugins';
 
 export function Debug() {
+	const [getStates, setStates] = createSignal<PluginState[]>([]);
+
+	onMount(async () => {
+		setStates(await getPluginStates());
+	});
+
 	return (
 		<DeeplinkLayout>
 			<h2 class={styles.mono}>Debugging Page</h2>
@@ -19,12 +28,9 @@ export function Debug() {
 				}}
 				class={styles.mono}
 			>
-				<p>
-					Version <span>v</span>
-					{'process.env.VERSION'}
-				</p>
-				<span>Total Plugin States: {getPluginStates().length}</span>
-				<span>Enabled Plugin States: {getPluginStates().filter((s) => s.enabled).length}</span>
+				<p>Version v{window.charity.internal.info.version}</p>
+				<span>Total Plugin States: {getStates().length}</span>
+				<span>Enabled Plugin States: {getStates().filter((s) => s.enabled).length}</span>
 
 				<div
 					style={{
@@ -35,13 +41,10 @@ export function Debug() {
 					<Button buttonStyle='red' onClick={() => setPluginStates([])}>
 						Clear Plugin States
 					</Button>
-					<Button onClick={() => setPluginStates(getPluginStates().map((s) => ({ ...s, enabled: true })))}>
+					<Button onClick={() => setPluginStates(getStates().map((s) => ({ ...s, enabled: true })))}>
 						Enable all plugins
 					</Button>
-					<Button
-						buttonStyle='red'
-						onClick={() => setPluginStates(getPluginStates().map((s) => ({ ...s, enabled: false })))}
-					>
+					<Button buttonStyle='red' onClick={() => setPluginStates(getStates().map((s) => ({ ...s, enabled: false })))}>
 						Disable all plugins
 					</Button>
 				</div>

@@ -1,26 +1,23 @@
 import { fetchManifest, Plugin, PluginDefinition, PluginManifest, PluginState, validatePluginDefintion } from '.';
-import { fetchWithoutCORS } from '../utils/gm';
+import { fetchWithoutCORS, getValue, setValue } from '../utils/gm';
 
-const PLUGIN_STATES_KEY = 'charity.plugins';
+export const getPluginStates = async (): Promise<PluginState[]> => getValue('plugins', []);
+export const setPluginStates = async (states: PluginState[]) => await setValue('plugins', states);
 
 /** This function WILL throw on manifest validation failures */
 export const addPlugin = async (url: string) => {
 	const manifest = await fetchManifest(url);
-	const pluginStates = getPluginStates();
+	const pluginStates = await getPluginStates();
 	if (pluginStates.find((s) => s.url === url || s.id === manifest.id)) throw new Error('plugin already installed');
 	pluginStates.push({ id: manifest.id, url, enabled: true, error: null });
-	setPluginStates(pluginStates);
+	await setPluginStates(pluginStates);
 };
 
-export const removePlugin = (id: string) => {
-	let pluginStates = getPluginStates();
+export const removePlugin = async (id: string) => {
+	let pluginStates = await getPluginStates();
 	pluginStates = pluginStates.filter((s) => s.id !== id);
-	setPluginStates(pluginStates);
+	await setPluginStates(pluginStates);
 };
-
-export const getPluginStates = (): PluginState[] => JSON.parse(localStorage.getItem(PLUGIN_STATES_KEY));
-export const setPluginStates = (states: PluginState[]) =>
-	localStorage.setItem(PLUGIN_STATES_KEY, JSON.stringify(states));
 
 export const loadPlugin = async (url: string, manifest: PluginManifest) => {
 	const res = await fetchWithoutCORS(url + 'index.js?' + Date.now());
@@ -46,7 +43,7 @@ export const loadPlugins = async () => {
 		value: [],
 	});
 
-	const pluginStates: PluginState[] = JSON.parse(localStorage.getItem(PLUGIN_STATES_KEY) ?? '[]');
+	const pluginStates: PluginState[] = await getPluginStates();
 
 	await Promise.all(
 		pluginStates
@@ -85,5 +82,5 @@ export const loadPlugins = async () => {
 			}),
 	);
 
-	localStorage.setItem(PLUGIN_STATES_KEY, JSON.stringify(pluginStates));
+	await setPluginStates(pluginStates);
 };

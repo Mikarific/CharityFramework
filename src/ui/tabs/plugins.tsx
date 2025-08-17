@@ -9,17 +9,17 @@ import { Button } from '../components/button';
 let input: HTMLInputElement;
 
 export function Plugins() {
-	const [getStates, setStates] = createSignal(getPluginStates());
+	const [getStates, setStates] = createSignal<PluginState[]>([]);
 	const [getPlugins, setPlugins] = createSignal<(Plugin & { removed: boolean })[]>([]);
 	const [getBrokenPlugins, setBrokenPlugins] = createSignal<PluginState[]>([]);
 	const [getReloadRecomended, setReloadRecomended] = createSignal(false);
 
-	const refreshStates = () => {
-		setStates(getPluginStates());
+	const refreshStates = async () => {
+		setStates(await getPluginStates());
 		setPlugins(
 			window.charity.internal.plugins.map((p) => ({
 				...p,
-				removed: !getPluginStates().find((s) => s.id === p.manifest.id),
+				removed: !getStates().find((s) => s.id === p.manifest.id),
 			})),
 		);
 		setBrokenPlugins(getStates().filter((s) => s.enabled && s.error));
