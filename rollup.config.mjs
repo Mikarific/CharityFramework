@@ -89,7 +89,19 @@ function pageExecution() {
 		renderChunk(code) {
 			// Object.defineProperty(unsafeWindow, 'charity', { configurable: false, enumerable: true, writable: false, value: cloneInto({}, unsafeWindow) });
 			// Object.defineProperty(unsafeWindow.charity, 'internal', { configurable: false, enumerable: false, writable: false, value: cloneInto({}, unsafeWindow) });
-			// Object.defineProperty(unsafeWindow.charity.internal, 'info', { configurable: false, enumerable: true, writable: false, value: cloneInto(GM.info.script, unsafeWindow) });
+			// Object.defineProperty(unsafeWindow.charity.internal, 'info', { configurable: false, enumerable: true, writable: false, value: cloneInto({
+			// 	name: GM.info.scriptMetaStr.match(/^\/\/[ \t\f\v]+@name[ \t\f\v]+(.+)$/m)?.[1].trim() ?? null,
+			// 	description: GM.info.scriptMetaStr.match(/^\/\/[ \t\f\v]+@description[ \t\f\v]+(.+)$/m)?.[1].trim() ?? null,
+			// 	version: GM.info.scriptMetaStr.match(/^\/\/[ \t\f\v]+@version[ \t\f\v]+(.+)$/m)?.[1].trim() ?? null,
+			// 	author: GM.info.scriptMetaStr.match(/^\/\/[ \t\f\v]+@author[ \t\f\v]+(.+)$/m)?.[1].trim() ?? null,
+			// 	license: GM.info.scriptMetaStr.match(/^\/\/[ \t\f\v]+@license[ \t\f\v]+(.+)$/m)?.[1].trim() ?? null,
+			// 	homepage: GM.info.scriptMetaStr.match(/^\/\/[ \t\f\v]+@(?:homepage|homepageURL|website|source)[ \t\f\v]+(.+)$/m)?.[1].trim() ?? null,
+			// 	supportURL: GM.info.scriptMetaStr.match(/^\/\/[ \t\f\v]+@(?:support|supportURL)[ \t\f\v]+(.+)$/m)?.[1].trim() ?? null,
+			// 	downloadURL: GM.info.scriptMetaStr.match(/^\/\/[ \t\f\v]+@(?:downloadURL|installURL)[ \t\f\v]+(.+)$/m)?.[1].trim() ?? null,
+			// 	updateURL: GM.info.scriptMetaStr.match(/^\/\/[ \t\f\v]+@updateURL[ \t\f\v]+(.+)$/m)?.[1].trim() ?? null,
+			// 	contributionURL: GM.info.scriptMetaStr.match(/^\/\/[ \t\f\v]+@contributionURL[ \t\f\v]+(.+)$/m)?.[1].trim() ?? null,
+			// }, unsafeWindow) });
+			const info = `Object.defineProperty(unsafeWindow,"charity",{configurable:!1,enumerable:!0,writable:!1,value:cloneInto({},unsafeWindow)}),Object.defineProperty(unsafeWindow.charity,"internal",{configurable:!1,enumerable:!1,writable:!1,value:cloneInto({},unsafeWindow)}),Object.defineProperty(unsafeWindow.charity.internal,"info",{configurable:!1,enumerable:!0,writable:!1,value:cloneInto({name:GM.info.scriptMetaStr.match(/^\\/\\/[ \\t\\f\\v]+@name[ \\t\\f\\v]+(.+)$/m)?.[1].trim()??null,description:GM.info.scriptMetaStr.match(/^\\/\\/[ \\t\\f\\v]+@description[ \\t\\f\\v]+(.+)$/m)?.[1].trim()??null,version:GM.info.scriptMetaStr.match(/^\\/\\/[ \\t\\f\\v]+@version[ \\t\\f\\v]+(.+)$/m)?.[1].trim()??null,author:GM.info.scriptMetaStr.match(/^\\/\\/[ \\t\\f\\v]+@author[ \\t\\f\\v]+(.+)$/m)?.[1].trim()??null,license:GM.info.scriptMetaStr.match(/^\\/\\/[ \\t\\f\\v]+@license[ \\t\\f\\v]+(.+)$/m)?.[1].trim()??null,homepage:GM.info.scriptMetaStr.match(/^\\/\\/[ \\t\\f\\v]+@(?:homepage|homepageURL|website|source)[ \\t\\f\\v]+(.+)$/m)?.[1].trim()??null,supportURL:GM.info.scriptMetaStr.match(/^\\/\\/[ \\t\\f\\v]+@(?:support|supportURL)[ \\t\\f\\v]+(.+)$/m)?.[1].trim()??null,downloadURL:GM.info.scriptMetaStr.match(/^\\/\\/[ \\t\\f\\v]+@(?:downloadURL|installURL)[ \\t\\f\\v]+(.+)$/m)?.[1].trim()??null,updateURL:GM.info.scriptMetaStr.match(/^\\/\\/[ \\t\\f\\v]+@updateURL[ \\t\\f\\v]+(.+)$/m)?.[1].trim()??null,contributionURL:GM.info.scriptMetaStr.match(/^\\/\\/[ \\t\\f\\v]+@contributionURL[ \\t\\f\\v]+(.+)$/m)?.[1].trim()??null},unsafeWindow)});`
 			// window.addEventListener('message', async (event) => {
 			//     if (!event.data?.func?.startsWith("GM.")) return;
 			//     try {
@@ -113,10 +125,12 @@ function pageExecution() {
 			//         window.postMessage({ id: event.data.id, error: String(err) }, event.origin);
 			//     }
 			// });
+			const apis = `window.addEventListener("message",async e=>{if(e.data?.func?.startsWith("GM."))try{let f=e.data.func.slice(3);if("function"!=typeof GM[f])throw Error("No such GM function: "+f);if("xmlHttpRequest"===f){let m=r=>Object.fromEntries(["context","finalUrl","lengthComputable","loaded","readyState","response","responseHeaders","responseText","status","statusText","total"].map(k=>[k,r[k]]));GM[f]({...e.data.args[0],onload:r=>window.postMessage({id:e.data.id,load:m(r)},e.origin),onerror:r=>window.postMessage({id:e.data.id,error:m(r)},e.origin),ontimeout:r=>window.postMessage({id:e.data.id,timeout:m(r)},e.origin),onabort:r=>window.postMessage({id:e.data.id,abort:m(r)},e.origin),onprogress:r=>window.postMessage({id:e.data.id,progress:m(r)},e.origin),onreadystatechange:r=>window.postMessage({id:e.data.id,readystatechange:m(r)},e.origin)});return}window.postMessage({id:e.data.id,result:await GM[f](...e.data.args||[])},e.origin)}catch(x){window.postMessage({id:e.data.id,error:String(x)},e.origin)}});`;
 			// const script = document.createElement("script");
 			// script.textContent=`(\${(()=>{<INSERT CODE HERE>}).toString()})();`;
 			// document.documentElement.appendChild(script);
-			return `Object.defineProperty(unsafeWindow,"charity",{configurable:!1,enumerable:!0,writable:!1,value:cloneInto({},unsafeWindow)}),Object.defineProperty(unsafeWindow.charity,"internal",{configurable:!1,enumerable:!1,writable:!1,value:cloneInto({},unsafeWindow)}),Object.defineProperty(unsafeWindow.charity.internal,"info",{configurable:!1,enumerable:!0,writable:!1,value:cloneInto(GM.info.script,unsafeWindow)}),window.addEventListener("message",async e=>{if(e.data?.func?.startsWith("GM."))try{let f=e.data.func.slice(3);if("function"!=typeof GM[f])throw Error("No such GM function: "+f);if("xmlHttpRequest"===f){let m=r=>Object.fromEntries(["context","finalUrl","lengthComputable","loaded","readyState","response","responseHeaders","responseText","status","statusText","total"].map(k=>[k,r[k]]));GM[f]({...e.data.args[0],onload:r=>window.postMessage({id:e.data.id,load:m(r)},e.origin),onerror:r=>window.postMessage({id:e.data.id,error:m(r)},e.origin),ontimeout:r=>window.postMessage({id:e.data.id,timeout:m(r)},e.origin),onabort:r=>window.postMessage({id:e.data.id,abort:m(r)},e.origin),onprogress:r=>window.postMessage({id:e.data.id,progress:m(r)},e.origin),onreadystatechange:r=>window.postMessage({id:e.data.id,readystatechange:m(r)},e.origin)});return}window.postMessage({id:e.data.id,result:await GM[f](...e.data.args||[])},e.origin)}catch(x){window.postMessage({id:e.data.id,error:String(x)},e.origin)}});const s=document.createElement('script');s.textContent=\`(\${(()=>{${code}}).toString()})();\`;document.documentElement.appendChild(s);`
+			const script = `const s=document.createElement('script');s.textContent=\`(\${(()=>{${code}}).toString()})();\`;document.documentElement.appendChild(s);`;
+			return `${info}${apis}${script}`;
 		},
 	};
 };

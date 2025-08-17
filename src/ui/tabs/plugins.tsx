@@ -3,7 +3,6 @@ import { createSignal, For, Show } from 'solid-js';
 import { addPlugin, getPluginStates, removePlugin } from '../../plugins/loader';
 import styles from '../styles/panel.module.css';
 import { Card, CardDescription, CardTitle } from '../components/card';
-import { DISCORD_SERVER_LINK } from '../../constants';
 import { Plugin, PluginState } from '../../plugins';
 import { Button } from '../components/button';
 
@@ -61,7 +60,7 @@ export function Plugins() {
 					<CardTitle>Some plugins failed to load</CardTitle>
 					<CardDescription>
 						Plugins can fail to load for various reasons, check your console for the error or ask for support in our{' '}
-						<a href={DISCORD_SERVER_LINK}>discord server</a>.
+						<a href={window.charity.internal.info.supportURL}>discord server</a>.
 					</CardDescription>
 				</Card>
 			</Show>

@@ -70,7 +70,18 @@ declare global {
 				user: User;
 			};
 			internal: {
-				info: VMScriptGMInfoScriptMeta;
+				info: {
+					name: string | null;
+					description: string | null;
+					version: string | null;
+					author: string | null;
+					license: string | null;
+					homepage: string | null;
+					supportURL: string | null;
+					downloadURL: string | null;
+					updateURL: string | null;
+					contributionURL: string | null;
+				};
 				plugins: Plugin[];
 			};
 			plugin: {
