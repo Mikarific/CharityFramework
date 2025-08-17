@@ -13,7 +13,6 @@
 // @updateURL   <URL>
 // @homepageURL https://discord.gg/anBdazHcrH
 // @supportURL  https://discord.gg/anBdazHcrH
-// @inject-into page
 // @connect     *
 // @resource    logo https://raw.githubusercontent.com/Mikarific/CharityFramework/main/assets/logo.png
 // @grant       GM.getValue
