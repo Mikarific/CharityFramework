@@ -91,11 +91,11 @@ export function AddPlugin() {
 								})
 						}
 						buttonStyle='green'
-						class={styles.pixel}
+						className={styles.pixel}
 					>
 						Add
 					</Button>
-					<Button class={styles.pixel} buttonStyle='red' onClick={() => window.location.replace('/')}>
+					<Button className={styles.pixel} buttonStyle='red' onClick={() => window.location.replace('/')}>
 						Cancel
 					</Button>
 				</div>

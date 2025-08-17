@@ -82,6 +82,7 @@ declare global {
 					updateURL: string | null;
 					contributionURL: string | null;
 				};
+				currentUrlOverride: string;
 				plugins: Plugin[];
 			};
 			plugin: {
@@ -95,6 +96,12 @@ declare global {
 			source?: (...args: any[]) => any;
 		};
 	}
+
+	declare var process: {
+		env: {
+			NODE_ENV: string;
+		};
+	};
 }
 
 export {};

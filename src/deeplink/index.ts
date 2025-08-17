@@ -1,6 +1,10 @@
 import addPluginType from './types/add-plugin';
+import turnstileType from './types/turnstile';
+import staticType from './types/static';
 import debugType from './types/debug';
+
 import { stylesheet, default as styles } from './styles/deeplink.module.css';
+import { IS_PROD } from '../utils/constants';
 const DEEPLINK_PATH = '/charity';
 const DEEPLINK_APP_SHELL = `<head>
     <meta charset="UTF-8">
@@ -12,7 +16,7 @@ const DEEPLINK_APP_SHELL = `<head>
 </body>
 `;
 
-const DEEPLINK_TYPES: DeepLinkType[] = [addPluginType, debugType];
+const DEEPLINK_TYPES: DeepLinkType[] = [addPluginType, !IS_PROD && turnstileType, !IS_PROD && staticType, debugType];
 
 export interface DeepLinkType {
 	id: string;
@@ -21,7 +25,7 @@ export interface DeepLinkType {
 	render: (root: HTMLElement) => unknown;
 }
 
-export function executeDeepLink(): boolean {
+export async function executeDeepLink(): Promise<boolean> {
 	if (!window.location.pathname.startsWith(DEEPLINK_PATH)) return false;
 
 	const url = new URL(window.location.href);
@@ -32,13 +36,12 @@ export function executeDeepLink(): boolean {
 		const shell = DEEPLINK_APP_SHELL.replaceAll('{{ DEEPLINK_TYPE_TITLE }}', type.title);
 		document.querySelector('html').innerHTML = shell;
 
-		document.addEventListener('DOMContentLoaded', () => {
-			const styleElement = document.createElement('style');
-			styleElement.setAttribute('type', 'text/css');
-			styleElement.textContent = stylesheet;
-			document.head.appendChild(styleElement);
-			type.render(document.getElementById('deeplinkRoot'));
-		});
+		const styleElement = document.createElement('style');
+		styleElement.setAttribute('type', 'text/css');
+		styleElement.textContent = stylesheet;
+		document.head.appendChild(styleElement);
+		const ret = await type.render(document.getElementById('deeplinkRoot'));
+		if (ret === false) return ret;
 
 		return true;
 	}

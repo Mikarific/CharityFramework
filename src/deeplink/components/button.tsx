@@ -19,7 +19,7 @@ export function Button(
 	const styleClass = styles[styleToCssClass[buttonStyle]];
 
 	return (
-		<button {...props} class={`${styles.button} ${styleClass} ${className}`}>
+		<button {...props} class={`${styles.button} ${styleClass} ${className ?? ''}`}>
 			{children}
 		</button>
 	);

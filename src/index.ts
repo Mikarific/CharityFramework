@@ -7,8 +7,9 @@ import { executeDeepLink } from './deeplink';
 
 window.stop();
 (async () => {
-	if (executeDeepLink()) return;
-	const unparsedHtml = await (await fetch(location.href)).text();
+	await resources.init();
+	if (await executeDeepLink()) return;
+	const unparsedHtml = await (await fetch(window.charity.internal.currentUrlOverride ?? location.href)).text();
 	const parsedHtml = new DOMParser().parseFromString(unparsedHtml, 'text/html');
 	for (const attr of document.firstElementChild.attributes) {
 		document.firstElementChild.removeAttributeNode(attr);
@@ -55,7 +56,6 @@ window.stop();
 			.flat(1),
 	];
 
-	await resources.init();
 	ui.init();
 
 	window.esmsInitOptions = {
