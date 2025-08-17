@@ -98,18 +98,13 @@ window.stop();
 		module.setAttribute('rel', 'modulepreload-shim');
 	}
 	await import('https://esm.sh/es-module-shims');
-	for (const script of document.querySelectorAll('script:not([type])')) {
-		Object.defineProperty(document, 'currentScript', {
-			value: script,
-			configurable: true,
-		});
+	for (const script of document.querySelectorAll<HTMLScriptElement>('script:not([type])')) {
+		const scriptShim = document.createElement('script');
 		// es-module-shims assumes that everything is running as an es module, so this bullshit is needed.
-		eval((script as HTMLScriptElement).innerText.replaceAll('import(', 'importShim('));
+		scriptShim.innerText = script.innerText.replaceAll('import(', 'importShim(');
+		for (const attr of script.attributes) scriptShim.setAttribute(attr.name, attr.value);
+		script.replaceWith(scriptShim);
 	}
-	Object.defineProperty(document, 'currentScript', {
-		value: null,
-		configurable: true,
-	});
 
 	for (const plugin of window.charity.internal.plugins) {
 		await plugin.def.load(plugin.manifest);
