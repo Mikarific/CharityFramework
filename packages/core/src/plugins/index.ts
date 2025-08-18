@@ -38,6 +38,7 @@ export const validatePluginDefintion = (definition: PluginDefinition) => {
 			throw new Error('failed to validate definition.patches[' + i + ']' + '\n' + error.toString());
 		}
 	}
+	if (definition.init && typeof definition.init !== 'function') throw new Error('defintion.init isnt a function');
 	if (definition.load && typeof definition.load !== 'function') throw new Error('defintion.load isnt a function');
 };
 
