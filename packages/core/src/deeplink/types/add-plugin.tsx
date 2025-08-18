@@ -28,20 +28,20 @@ export function AddPlugin() {
 
 	return (
 		<DeeplinkLayout>
-			<h2 class={styles.pixel}>Add Plugin</h2>
+			<h2 class={`${styles.pixel} ${styles.textCenter}`}>Add Plugin</h2>
 			<Show when={!getManifest() && !hasError()}>
-				<h2 class={styles.pixel}>Loading...</h2>
+				<h2 class={`${styles.pixel} ${styles.textCenter}`}>Loading...</h2>
 			</Show>
 			<Show when={hasError()}>
 				<p
 					style={{
 						color: '#f87171',
 					}}
-					class={styles.pixel}
+					class={`${styles.pixel} ${styles.textCenter}`}
 				>
 					An error occured while loading plugin manifest, please make sure this is a valid link or check the console.
 				</p>
-				<Button class={styles.pixel} buttonStyle='red' onClick={() => window.location.replace('/')}>
+				<Button className={styles.pixel} buttonStyle='red' onClick={() => window.location.replace('/')}>
 					Cancel
 				</Button>
 			</Show>
@@ -50,12 +50,12 @@ export function AddPlugin() {
 					style={{
 						color: '#f87171',
 					}}
-					class={styles.pixel}
+					class={`${styles.pixel} ${styles.textCenter}`}
 				>
 					You already have this plugin installed.
 				</p>
 				<Button
-					class={styles.pixel}
+					className={styles.pixel}
 					buttonStyle='red'
 					onClick={() => {
 						removePlugin(getManifest().id);
@@ -67,7 +67,7 @@ export function AddPlugin() {
 			</Show>
 
 			<Show when={getManifest() && !hasError() && !isAlreadyInstalled()}>
-				<p class={styles.pixel}>
+				<p class={`${styles.pixel} ${styles.textCenter}`}>
 					<span class={styles.gray}>Are you sure you want to install </span>
 					{getManifest().name}
 					<span class={styles.gray}> by </span>
