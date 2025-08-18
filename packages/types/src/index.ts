@@ -1,6 +1,9 @@
-import type * as maplibregl from 'maplibre-gl';
-import type { toast } from 'svelte-sonner';
-import { Plugin } from '../plugins';
+import maplibregl from 'maplibre-gl';
+import { toast } from 'svelte-sonner';
+import { Plugin } from './plugin';
+
+export * from './patch';
+export * from './plugin';
 
 declare global {
 	class FlagsBitmap {
@@ -55,7 +58,7 @@ declare global {
 				maplibre: typeof maplibregl;
 				paraglide: {
 					getLocale(): string | undefined;
-					setLocale(newLocale: Locale, options?: { reload?: boolean }): void;
+					setLocale(newLocale: string, options?: { reload?: boolean }): void;
 				};
 				sonner: {
 					toast: typeof toast;
@@ -85,23 +88,6 @@ declare global {
 				currentUrlOverride: string;
 				plugins: Plugin[];
 			};
-			plugin: {
-				register: (plugin: Plugin) => void;
-			};
-		};
-		esmsInitOptions?: {
-			shimMode?: boolean;
-			nativePassthrough?: boolean;
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			source?: (...args: any[]) => any;
 		};
 	}
-
-	declare var process: {
-		env: {
-			NODE_ENV: string;
-		};
-	};
 }
-
-export {};

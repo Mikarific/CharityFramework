@@ -3,7 +3,8 @@ import { createSignal, For, Show } from 'solid-js';
 import { addPlugin, getPluginStates, removePlugin } from '../../plugins/loader';
 import styles from '../styles/panel.module.css';
 import { Card, CardDescription, CardTitle } from '../components/card';
-import { Plugin, PluginState } from '../../plugins';
+import { PluginState } from '../../plugins';
+import { Plugin } from '@placecharity/framework-types';
 import { Button } from '../components/button';
 
 let input: HTMLInputElement;

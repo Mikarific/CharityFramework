@@ -1,5 +1,5 @@
 import { expose } from '.';
-import { Patch } from '..';
+import { Patch } from '@placecharity/framework-types';
 import { defineGlobalPath } from '../../utils/global';
 
 export const exposeLibraries = (): Patch[] => {

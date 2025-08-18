@@ -17,7 +17,7 @@ const extensions = ['.ts', '.tsx', '.mjs', '.js', '.jsx'];
 
 export default defineConfig([
 	{
-		input: 'src/index.ts',
+		input: 'packages/core/src/index.ts',
 		plugins: [
 			postcssPlugin({
 				inject: false,

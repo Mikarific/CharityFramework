@@ -1,13 +1,15 @@
 {
-	"name": "charity-framework",
+	"name": "@placecharity/framework",
 	"version": "0.1.0-beta",
 	"description": "A plugin loader for wplace.live.",
 	"author": "Mikarific, xyzeva",
 	"license": "MIT",
-	"private": true,
 	"engines": {
 		"node": ">=18"
 	},
+	"workspaces": [
+		"packages/*"
+	],
 	"scripts": {
 		"dev": "cross-env NODE_ENV=development rollup -wc",
 		"clean": "del-cli dist",
@@ -31,18 +33,14 @@
 		"@rollup/plugin-replace": "^6.0.2",
 		"@rollup/plugin-terser": "^0.4.4",
 		"@types/eslint": "^9.6.1",
-		"@types/semver": "^7.7.0",
 		"@typescript-eslint/eslint-plugin": "^8.18.1",
 		"@typescript-eslint/parser": "^8.18.1",
-		"@violentmonkey/types": "^0.2.2",
 		"babel-preset-solid": "^1.9.9",
 		"cross-env": "^10.0.0",
 		"del-cli": "^6.0.0",
 		"eslint": "^9.15.0",
 		"eslint-config-prettier": "^10.1.8",
-		"globals": "^16.3.0",
 		"lint-staged": "^16.1.5",
-		"maplibre-gl": "5.5.0",
 		"npm-run-all": "^4.1.5",
 		"postcss": "^8.5.6",
 		"prettier": "^3.4.2",
@@ -50,14 +48,8 @@
 		"rollup": "^4.46.2",
 		"rollup-plugin-postcss": "^4.0.2",
 		"rollup-plugin-userscript": "^1.0.0",
-		"svelte-sonner": "^1.0.5",
 		"typescript": "^5.7.2",
 		"typescript-eslint": "^8.18.1"
-	},
-	"dependencies": {
-		"@babel/runtime": "^7.28.3",
-		"semver": "^7.7.2",
-		"solid-js": "^1.9.9"
 	},
 	"lint-staged": {
 		"*.{ts,tsx}": [

@@ -1,5 +1,6 @@
-import { fetchManifest, Plugin, PluginDefinition, PluginManifest, PluginState, validatePluginDefintion } from '.';
+import { fetchManifest, PluginState, validatePluginDefintion } from '.';
 import { fetchWithoutCORS, getValue, setValue } from '../utils/gm';
+import { PluginManifest, Plugin, PluginDefinition } from '@placecharity/framework-types';
 
 export const getPluginStates = async (): Promise<PluginState[]> => getValue('plugins', []);
 export const setPluginStates = async (states: PluginState[]) => await setValue('plugins', states);

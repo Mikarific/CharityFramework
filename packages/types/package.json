@@ -1,0 +1,11 @@
+{
+	"name": "@placecharity/framework-types",
+	"//": "publishing as beta1 so we can make changes to types",
+	"version": "0.1.0-beta2",
+	"main": "src/index.ts",
+	"types": "src/index.ts",
+	"dependencies": {
+		"svelte-sonner": "^1.0.5",
+		"maplibre-gl": "5.5.0"
+	}
+}

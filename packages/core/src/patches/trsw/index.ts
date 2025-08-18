@@ -1,4 +1,4 @@
-import { Patch } from '..';
+import { Patch } from '@placecharity/framework-types';
 
 export const trswPatches = (): Patch[] => [
 	{

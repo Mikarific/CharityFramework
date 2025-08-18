@@ -1,32 +1,12 @@
 import semver from 'semver';
-import { Patch } from '../patches';
 import { fetchWithoutCORS } from '../utils/gm';
+import { Patch, PluginDefinition, PluginManifest } from '@placecharity/framework-types';
 
 export interface PluginState {
 	id: string;
 	url: string;
 	enabled: boolean;
 	error: string | null;
-}
-
-export interface PluginManifest {
-	id: string;
-	name: string;
-	version: string;
-	authors: string[];
-	versions: {
-		framework: string;
-	};
-}
-
-export interface PluginDefinition {
-	patches: Patch[];
-	load: (manifest: PluginManifest) => void;
-}
-
-export interface Plugin {
-	manifest: PluginManifest;
-	def: PluginDefinition;
 }
 
 export const validateManifest = (manifest: PluginManifest) => {

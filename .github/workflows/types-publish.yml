@@ -1,0 +1,25 @@
+name: Publish framework-types
+on: workflow_dispatch
+
+permissions:
+  contents: read
+
+jobs:
+  types:
+    name: Publish framework-types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4 # specifically for publish
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: bun install
+      - name: Publish types
+        run: pnpm publish --filter=./packages/types --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,13 +1,11 @@
 {
 	"compilerOptions": {
-		"baseUrl": "./packages/",
 		"target": "esnext",
 		"module": "esnext",
 		"moduleResolution": "node",
 		"declaration": true,
+		"emitDeclarationOnly": true,
 		"allowSyntheticDefaultImports": true,
-		"jsx": "preserve",
-		"jsxImportSource": "solid-js",
 		"skipLibCheck": true,
 		"lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost", "ESNext"]
 	}

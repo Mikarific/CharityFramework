@@ -1,11 +1,12 @@
 import { createEffect, createSignal, Show } from 'solid-js';
 import { DeepLinkType } from '..';
-import { fetchManifest, PluginManifest } from '../../plugins';
+import { fetchManifest } from '../../plugins';
 import { DeeplinkLayout } from '../components/deeplink-layout';
 import styles from '../styles/deeplink.module.css';
 import { render } from 'solid-js/web';
 import { Button } from '../components/button';
 import { addPlugin, getPluginStates, removePlugin } from '../../plugins/loader';
+import { PluginManifest } from '@placecharity/framework-types';
 
 export function AddPlugin() {
 	const pluginUrl = new URL(window.location.href).searchParams.get('plugin');
