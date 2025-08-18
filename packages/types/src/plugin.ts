@@ -12,7 +12,8 @@ export interface PluginManifest {
 
 export interface PluginDefinition {
 	patches: Patch[];
-	load: (manifest: PluginManifest) => void;
+	init?: (manifest: PluginManifest) => unknown;
+	load?: (manifest: PluginManifest) => unknown;
 }
 
 export interface Plugin {

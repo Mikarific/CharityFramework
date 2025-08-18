@@ -40,7 +40,7 @@ export const exposeLibraries = (): Patch[] => {
 			find: 'MapLibre GL JS',
 			replace: {
 				match: /new ([a-zA-Z_$][\w$]*)\.Map\(.*?}\);/,
-				replace: (orig, mapLibreVar) => `${orig}${expose('lib', 'maplibre', mapLibreVar)};`,
+				replace: (orig, mapLibreVar) => `${orig}${expose('lib', 'maplibre', mapLibreVar)}`,
 			},
 		},
 	];
