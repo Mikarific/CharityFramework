@@ -7,7 +7,7 @@ import { executeDeepLink } from './deeplink';
 import { Patch } from '@placecharity/framework-types';
 import { checkForUpdates } from './utils/updates';
 
-document.body.style.display = 'none';
+if (document.body) document.body.style.display = 'none';
 window.stop();
 
 (async () => {
