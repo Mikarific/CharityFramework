@@ -4,8 +4,8 @@
 // @description A plugin loader for wplace.live.
 // @version     process.env.VERSION
 // @author      process.env.AUTHOR
-// @icon        https://raw.githubusercontent.com/Mikarific/CharityFramework/main/assets/icon.png
-// @icon64      https://raw.githubusercontent.com/Mikarific/CharityFramework/main/assets/icon64.png
+// @icon        https://dist.place.charity/assets/icon.png
+// @icon64      https://dist.place.charity/assets/icon64.png
 // @match       https://wplace.live/*
 // @run-at      document-start
 // @license     process.env.LICENSE
@@ -14,7 +14,7 @@
 // @homepageURL https://discord.gg/anBdazHcrH
 // @supportURL  https://discord.gg/anBdazHcrH
 // @connect     *
-// @resource    logo https://raw.githubusercontent.com/Mikarific/CharityFramework/main/assets/logo.png
+// @resource    logo https://dist.place.charity/assets/logo.png
 // @grant       GM.getValue
 // @grant       GM.setValue
 // @grant       GM.deleteValue
