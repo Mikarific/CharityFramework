@@ -9,6 +9,7 @@
 		"jsx": "preserve",
 		"jsxImportSource": "solid-js",
 		"skipLibCheck": true,
-		"lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost", "ESNext"]
-	}
+		"lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost", "ESNext"],
+	},
+	"exclude": ["node_modules"]
 }
