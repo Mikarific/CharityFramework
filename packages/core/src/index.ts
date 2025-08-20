@@ -5,6 +5,7 @@ import * as resources from './utils/resources';
 import * as ui from './ui';
 import { executeDeepLink } from './deeplink';
 import { Patch } from '@placecharity/framework-types';
+import { checkForUpdates } from './utils/updates';
 
 window.stop();
 (async () => {
@@ -110,4 +111,14 @@ window.stop();
 	for (const plugin of window.charity.internal.plugins) {
 		await plugin.def.init({ manifest: plugin.manifest, utils: plugin.utils });
 	}
+
+	checkForUpdates()
+		.then(
+			(outOfDate) =>
+				outOfDate &&
+				window.charity.lib.sonner.toast.warning(
+					'Charity Framework is out of date! Please go to the settings menu to update.',
+				),
+		)
+		.catch((e) => console.error('[Charity]', 'failed to check for updates', e));
 })();
