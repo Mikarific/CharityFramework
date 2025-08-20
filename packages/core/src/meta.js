@@ -9,8 +9,8 @@
 // @match       https://wplace.live/*
 // @run-at      document-start
 // @license     process.env.LICENSE
-// @downloadURL <URL>
-// @updateURL   <URL>
+// @downloadURL https://dist.place.charity/framework/CharityFramework.user.js
+// @updateURL   https://dist.place.charity/framework/CharityFramework.user.js
 // @homepageURL https://discord.gg/anBdazHcrH
 // @supportURL  https://discord.gg/anBdazHcrH
 // @connect     *
