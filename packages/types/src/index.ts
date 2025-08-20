@@ -20,6 +20,90 @@ export * from './game';
 export * from './patch';
 export * from './plugin';
 
+export type Charity = {
+	classes: {
+		API: typeof API;
+		Mercator: typeof Mercator;
+		User: typeof User;
+	};
+	data: {
+		audio: {
+			plop: HTMLAudioElement;
+			smallPlop: HTMLAudioElement;
+			bigPlop: HTMLAudioElement;
+			smallDropplet: HTMLAudioElement;
+			droppletAndPlop: HTMLAudioElement;
+			notification1: HTMLAudioElement;
+		};
+		colors: { name: string; rgb: [number, number, number] }[];
+		countries: { id: number; name: string; code: string; flag: string };
+		currentSeason: number;
+		errors: { [key: string]: string };
+		items: {
+			Droplet: Record<never, never>;
+			'Max. Charge': Record<never, never>;
+			'Paint Charge': Record<never, never>;
+			Color: Record<never, never>;
+			Flag: Record<never, never>;
+			'Profile Picture': Record<never, never>;
+		};
+		products: {
+			[key: number]: {
+				name: string;
+				price: number;
+				isDollar: boolean;
+				lookupKey: string;
+				items: { name: string; amount: number }[];
+			};
+		};
+		refreshIntervalMs: number;
+		regionSize: number;
+		seasons: { tileSize: number; zoom: number }[];
+		tileSize: number;
+		zoom: number;
+	};
+	game: {
+		api: API;
+		boundsToCoordinates(
+			bounds: Bounds,
+			swapCoords?: boolean,
+		): [[number, number], [number, number], [number, number], [number, number]];
+		getBoundsCenter(bounds: Bounds): [number, number];
+		getMapImageBlob(
+			map: maplibregl.Map,
+			options?: { quality?: number; type?: 'image/png' | 'image/jpeg'; maxWidth?: number; maxHeight?: number },
+		): Promise<Blob>;
+		getMapPixel(map: maplibregl.Map, x: number, y: number): Promise<[number, number, number, number]>;
+		map: maplibregl.Map;
+		mercator: Mercator;
+		user: User;
+	};
+	lib: {
+		maplibre: typeof maplibregl;
+		paraglide: {
+			getLocale(): string | undefined;
+			setLocale(newLocale: string, options?: { reload?: boolean }): void;
+		};
+		sonner: { toast: typeof toast };
+	};
+	internal: {
+		info: {
+			name: string | null;
+			description: string | null;
+			version: string | null;
+			author: string | null;
+			license: string | null;
+			homepage: string | null;
+			supportURL: string | null;
+			downloadURL: string | null;
+			updateURL: string | null;
+			contributionURL: string | null;
+		};
+		currentUrlOverride: string;
+		plugins: Plugin[];
+	};
+};
+
 declare global {
 	class Bitmap {
 		constructor(bytes: Uint8Array);
@@ -142,88 +226,8 @@ declare global {
 	}
 
 	interface Window {
-		charity: {
-			classes: {
-				API: typeof API;
-				Mercator: typeof Mercator;
-				User: typeof User;
-			};
-			data: {
-				audio: {
-					plop: HTMLAudioElement;
-					smallPlop: HTMLAudioElement;
-					bigPlop: HTMLAudioElement;
-					smallDropplet: HTMLAudioElement;
-					droppletAndPlop: HTMLAudioElement;
-					notification1: HTMLAudioElement;
-				};
-				colors: { name: string; rgb: [number, number, number] }[];
-				countries: { id: number; name: string; code: string; flag: string };
-				currentSeason: number;
-				errors: { [key: string]: string };
-				items: {
-					Droplet: Record<never, never>;
-					'Max. Charge': Record<never, never>;
-					'Paint Charge': Record<never, never>;
-					Color: Record<never, never>;
-					Flag: Record<never, never>;
-					'Profile Picture': Record<never, never>;
-				};
-				products: {
-					[key: number]: {
-						name: string;
-						price: number;
-						isDollar: boolean;
-						lookupKey: string;
-						items: { name: string; amount: number }[];
-					};
-				};
-				refreshIntervalMs: number;
-				regionSize: number;
-				seasons: { tileSize: number; zoom: number }[];
-				tileSize: number;
-				zoom: number;
-			};
-			game: {
-				api: API;
-				boundsToCoordinates(
-					bounds: Bounds,
-					swapCoords?: boolean,
-				): [[number, number], [number, number], [number, number], [number, number]];
-				getBoundsCenter(bounds: Bounds): [number, number];
-				getMapImageBlob(
-					map: maplibregl.Map,
-					options?: { quality?: number; type?: 'image/png' | 'image/jpeg'; maxWidth?: number; maxHeight?: number },
-				): Promise<Blob>;
-				getMapPixel(map: maplibregl.Map, x: number, y: number): Promise<[number, number, number, number]>;
-				map: maplibregl.Map;
-				mercator: Mercator;
-				user: User;
-			};
-			lib: {
-				maplibre: typeof maplibregl;
-				paraglide: {
-					getLocale(): string | undefined;
-					setLocale(newLocale: string, options?: { reload?: boolean }): void;
-				};
-				sonner: { toast: typeof toast };
-			};
-			internal: {
-				info: {
-					name: string | null;
-					description: string | null;
-					version: string | null;
-					author: string | null;
-					license: string | null;
-					homepage: string | null;
-					supportURL: string | null;
-					downloadURL: string | null;
-					updateURL: string | null;
-					contributionURL: string | null;
-				};
-				currentUrlOverride: string;
-				plugins: Plugin[];
-			};
-		};
+		charity: Charity;
 	}
+
+	const charity: Charity;
 }
