@@ -18,7 +18,9 @@ export function Debug() {
 	return (
 		<DeeplinkLayout>
 			<h2 class={styles.mono}>Debugging Page</h2>
-			<Button onClick={() => location.replace('/')}>Go back to wplace</Button>
+			<Button className={styles.pixel} onClick={() => location.replace('/')}>
+				Go back to wplace
+			</Button>
 
 			<div
 				style={{
@@ -38,13 +40,20 @@ export function Debug() {
 						gap: '8px',
 					}}
 				>
-					<Button buttonStyle='red' onClick={() => setPluginStates([])}>
+					<Button className={styles.pixel} buttonStyle='red' onClick={() => setPluginStates([])}>
 						Clear Plugin States
 					</Button>
-					<Button onClick={() => setPluginStates(getStates().map((s) => ({ ...s, enabled: true })))}>
+					<Button
+						className={styles.pixel}
+						onClick={() => setPluginStates(getStates().map((s) => ({ ...s, enabled: true })))}
+					>
 						Enable all plugins
 					</Button>
-					<Button buttonStyle='red' onClick={() => setPluginStates(getStates().map((s) => ({ ...s, enabled: false })))}>
+					<Button
+						className={styles.pixel}
+						buttonStyle='red'
+						onClick={() => setPluginStates(getStates().map((s) => ({ ...s, enabled: false })))}
+					>
 						Disable all plugins
 					</Button>
 				</div>
