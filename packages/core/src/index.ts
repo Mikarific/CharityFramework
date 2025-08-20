@@ -102,7 +102,7 @@ window.stop();
 	for (const script of document.querySelectorAll<HTMLScriptElement>('script:not([type])')) {
 		const scriptShim = document.createElement('script');
 		// es-module-shims assumes that everything is running as an es module, so this bullshit is needed.
-		scriptShim.innerText = script.innerText.replaceAll('import(', 'importShim(');
+		scriptShim.textContent = script.textContent.replaceAll('import(', 'importShim(');
 		for (const attr of script.attributes) scriptShim.setAttribute(attr.name, attr.value);
 		script.replaceWith(scriptShim);
 	}

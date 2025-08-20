@@ -1,5 +1,4 @@
 /// <reference types="@violentmonkey/types" />
-
 import { PluginUtils } from 'types/src';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
