@@ -34,6 +34,9 @@ export function Plugins() {
 	refreshStates();
 	return (
 		<div class={styles.plugins}>
+			<p style={{ display: 'inline-block', margin: 0 }}>
+				You can find plugins to add from our official repository <a href='https://place.charity/plugins'>here</a>.
+			</p>
 			<div class={styles.addPlugin}>
 				<input
 					ref={input}
