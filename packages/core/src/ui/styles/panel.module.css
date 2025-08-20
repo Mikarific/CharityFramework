@@ -31,7 +31,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 64px;
+	min-height: 64px;
 	gap: 32px;
 	background-color: #2a303c;
 	border-bottom: 3px solid #1f242d;
