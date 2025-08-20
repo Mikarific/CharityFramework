@@ -49,6 +49,7 @@ export function Plugins() {
 						try {
 							await addPlugin(input.value);
 							refreshStates();
+							input.value = '';
 						} catch (err) {
 							console.error('[Charity]', err);
 						}
