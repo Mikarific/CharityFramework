@@ -41,6 +41,11 @@ export function About() {
 					<p class={styles.gray}>{window.charity.internal.info.author}</p>
 				</div>
 			</div>
+			<div class={styles.aboutLinks}>
+				<a href={window.charity.internal.info.supportURL} target='_blank'>
+					Discord (Support)
+				</a>
+			</div>
 		</div>
 	);
 }

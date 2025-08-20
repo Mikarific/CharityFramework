@@ -90,6 +90,13 @@
 	gap: 8px;
 }
 
+.aboutLinks {
+	display: flex;
+	justify-content: center;
+	align-items: ceter;
+	gap: 4px;
+}
+
 .version,
 .author {
 	display: flex;
