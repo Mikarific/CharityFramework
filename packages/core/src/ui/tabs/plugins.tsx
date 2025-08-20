@@ -14,6 +14,7 @@ export function Plugins() {
 	const [getPlugins, setPlugins] = createSignal<(Plugin & { removed: boolean })[]>([]);
 	const [getBrokenPlugins, setBrokenPlugins] = createSignal<PluginState[]>([]);
 	const [getReloadRecomended, setReloadRecomended] = createSignal(false);
+	const [getInstallError, setInstallError] = createSignal(false);
 
 	const refreshStates = async () => {
 		setStates(await getPluginStates());
@@ -34,7 +35,7 @@ export function Plugins() {
 	refreshStates();
 	return (
 		<div class={styles.plugins}>
-			<p style={{ display: 'inline-block', margin: 0 }}>
+			<p style={{ display: 'inline-block', margin: '4px' }}>
 				You can find plugins to add from our official repository <a href='https://place.charity/plugins'>here</a>.
 			</p>
 			<div class={styles.addPlugin}>
@@ -46,12 +47,14 @@ export function Plugins() {
 				/>
 				<Button
 					onClick={async () => {
+						setInstallError(false);
 						try {
 							await addPlugin(input.value);
 							refreshStates();
 							input.value = '';
 						} catch (err) {
 							console.error('[Charity]', err);
+							setInstallError(true);
 						}
 					}}
 					onMouseDown={(e) => e.stopPropagation()}
@@ -60,6 +63,11 @@ export function Plugins() {
 					Add
 				</Button>
 			</div>
+			<Show when={getInstallError()}>
+				<p class={styles.red} style={{ display: 'inline-block', margin: '4px' }}>
+					An error occured while adding that plugin. Please check your console or contact the author.
+				</p>
+			</Show>
 			<Show when={getBrokenPlugins().length > 0}>
 				<Card style='error'>
 					<CardTitle>Some plugins failed to load</CardTitle>
