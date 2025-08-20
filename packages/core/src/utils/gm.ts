@@ -99,7 +99,7 @@ export const xmlHttpRequest = async <T = string | object | Document | ArrayBuffe
 	);
 };
 
-export const fetchWithoutCORS: typeof fetch = (input, init) => {
+export const fetchWithoutCors: typeof fetch = (input, init) => {
 	return new Promise((resolve, reject) => {
 		const request = new Request(input, init);
 
@@ -209,18 +209,18 @@ export function getUtils(pluginId: string) {
 	return {
 		async getValue(name, defaultValue) {
 			if (!structuredClonable(defaultValue)) throw new Error('defaultValue of getValue must be structured clonable.');
-			return GM.getValue(`${pluginId}_${name}`, defaultValue);
+			return getValue(`${pluginId}_${name}`, defaultValue);
 		},
 		async setValue(name, value) {
 			if (!structuredClonable(value)) throw new Error('value of setValue must be structured clonable.');
-			return GM.setValue(name, value);
+			return setValue(`${pluginId}_${name}`, value);
 		},
 		async deleteValue(name) {
-			return GM.deleteValue(name);
+			return deleteValue(`${pluginId}_${name}`);
 		},
 		async listValues() {
-			return GM.listValues();
+			return listValues();
 		},
-		fetchWithoutCORS,
+		fetchWithoutCors,
 	} as PluginUtils;
 }

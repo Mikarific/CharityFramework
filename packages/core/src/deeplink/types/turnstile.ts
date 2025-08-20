@@ -14,8 +14,8 @@ export default {
 <textarea id="turnstileResult" onclick="this.select()" readonly></textarea>`;
 
 		await new Promise((resolve) => setTimeout(resolve, 500));
-		const castWindow = window as any;
-		castWindow.turnstile.render('#turnstileContainer', {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		(window as any).turnstile.render('#turnstileContainer', {
 			sitekey: '0x4AAAAAABpqJe8FO0N84q0F',
 			callback: (token: string) => ((document.getElementById('turnstileResult') as HTMLTextAreaElement).value = token),
 			appearance: 'execute',

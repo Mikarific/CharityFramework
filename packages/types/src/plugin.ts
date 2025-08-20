@@ -17,7 +17,12 @@ export interface PluginUtils {
 	setValue: typeof GM.setValue;
 	deleteValue: typeof GM.deleteValue;
 	listValues: typeof GM.listValues;
-	fetchWithoutCORS: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
+	fetchWithoutCors: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
+}
+
+export interface PluginInfo {
+	manifest: PluginManifest;
+	utils: PluginUtils;
 }
 
 export interface PluginDefinition {
@@ -29,10 +34,5 @@ export interface PluginDefinition {
 export interface Plugin {
 	manifest: PluginManifest;
 	def: PluginDefinition;
-	utils: PluginUtils;
-}
-
-export interface PluginInfo {
-	manifest: PluginManifest;
 	utils: PluginUtils;
 }

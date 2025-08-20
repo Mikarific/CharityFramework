@@ -1,5 +1,5 @@
 import { fetchManifest, PluginState, validatePluginDefintion } from '.';
-import { fetchWithoutCORS, getValue, setValue } from '../utils/gm';
+import { fetchWithoutCors, getUtils, getValue, setValue } from '../utils/gm';
 import { PluginManifest, Plugin, PluginDefinition } from '@placecharity/framework-types';
 
 export const getPluginStates = async (): Promise<PluginState[]> => getValue('plugins', []);
@@ -21,7 +21,7 @@ export const removePlugin = async (id: string) => {
 };
 
 export const loadPlugin = async (url: string, manifest: PluginManifest) => {
-	const res = await fetchWithoutCORS(url + 'index.js?' + Date.now());
+	const res = await fetchWithoutCors(url + 'index.js?' + Date.now());
 	if (!res.ok) {
 		throw new Error('failed to fetch bundle status=' + res.status);
 	}
@@ -31,7 +31,9 @@ export const loadPlugin = async (url: string, manifest: PluginManifest) => {
 	const def: PluginDefinition = await eval(code);
 	validatePluginDefintion(def);
 
-	const plugin: Plugin = { manifest, def };
+	const utils = getUtils(manifest.id);
+
+	const plugin: Plugin = { manifest, def, utils };
 	window.charity.internal.plugins.push(plugin);
 	console.log('[Charity]', 'registered plugin', manifest.id, `(${manifest.version})`);
 };

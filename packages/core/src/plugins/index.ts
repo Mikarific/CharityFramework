@@ -1,5 +1,5 @@
 import semver from 'semver';
-import { fetchWithoutCORS } from '../utils/gm';
+import { fetchWithoutCors } from '../utils/gm';
 import { Patch, PluginDefinition, PluginManifest } from '@placecharity/framework-types';
 
 export interface PluginState {
@@ -44,7 +44,7 @@ export const validatePluginDefintion = (definition: PluginDefinition) => {
 
 export const fetchManifest = async (url: string) => {
 	if (!url.endsWith('/')) url += '/';
-	const manifestRes = await fetchWithoutCORS(url + 'manifest.json?' + Date.now());
+	const manifestRes = await fetchWithoutCors(url + 'manifest.json?' + Date.now());
 
 	if (!manifestRes.ok) {
 		throw new Error('failed to fetch manifest status=' + manifestRes.status);

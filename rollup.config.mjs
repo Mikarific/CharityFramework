@@ -50,7 +50,7 @@ export default defineConfig([
 			commonjsPlugin(),
 			jsonPlugin(),
 			pageExecution(),
-			terserPlugin(true),
+			terserPlugin(),
 			userscript((meta) => meta
 				.replace('process.env.AUTHOR', packageJson.author.name)
 				.replace('process.env.VERSION', packageJson.version)

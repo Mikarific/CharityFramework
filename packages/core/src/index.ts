@@ -5,7 +5,6 @@ import * as resources from './utils/resources';
 import * as ui from './ui';
 import { executeDeepLink } from './deeplink';
 import { Patch } from '@placecharity/framework-types';
-import { getUtils } from './utils/gm';
 
 window.stop();
 (async () => {
@@ -109,9 +108,6 @@ window.stop();
 	}
 
 	for (const plugin of window.charity.internal.plugins) {
-		await plugin.def.init({
-			manifest: plugin.manifest,
-			utils: getUtils(plugin.manifest.id),
-		});
+		await plugin.def.init({ manifest: plugin.manifest, utils: plugin.utils });
 	}
 })();
