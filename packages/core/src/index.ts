@@ -7,7 +7,7 @@ import { executeDeepLink } from './deeplink';
 import { Patch } from '@placecharity/framework-types';
 import { checkForUpdates } from './utils/updates';
 
-document.body.style.display = 'none';
+document.documentElement.style.display = 'none';
 window.stop();
 
 (async () => {
@@ -17,7 +17,7 @@ window.stop();
 
 	if (!res.headers.get('Content-Type')?.includes('text/html')) {
 		console.log('[Charity]', 'not continuing execution because content type doesnt contain html');
-		document.body.style.display = '';
+		document.documentElement.style.display = '';
 		return;
 	}
 
@@ -29,7 +29,6 @@ window.stop();
 	for (const attr of parsedHtml.firstElementChild.attributes) {
 		document.firstElementChild.setAttributeNode(attr.cloneNode() as Attr);
 	}
-	parsedHtml.body.style.display = 'none';
 	document.firstElementChild.replaceChildren(...parsedHtml.firstElementChild.children);
 
 	// cursed as fuck double header patch, replace this with a fork of esmshims later lmao
@@ -119,7 +118,7 @@ window.stop();
 		script.replaceWith(scriptShim);
 	}
 
-	document.body.style.display = '';
+	document.documentElement.style.display = '';
 
 	for (const plugin of window.charity.internal.plugins) {
 		await plugin.def.init({ manifest: plugin.manifest, utils: plugin.utils });
