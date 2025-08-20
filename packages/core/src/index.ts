@@ -11,7 +11,14 @@ window.stop();
 (async () => {
 	await resources.init();
 	if (await executeDeepLink()) return;
-	const unparsedHtml = await (await fetch(window.charity.internal.currentUrlOverride ?? location.href)).text();
+	const res = await fetch(window.charity.internal.currentUrlOverride ?? location.href);
+
+	if (!res.headers.get('Content-Type')?.includes('text/html')) {
+		console.log('[Charity]', 'not continuing execution because content type doesnt contain html');
+		return;
+	}
+
+	const unparsedHtml = await res.text();
 	const parsedHtml = new DOMParser().parseFromString(unparsedHtml, 'text/html');
 	for (const attr of document.firstElementChild.attributes) {
 		document.firstElementChild.removeAttributeNode(attr);
