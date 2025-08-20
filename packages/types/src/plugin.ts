@@ -1,5 +1,4 @@
-/// <reference types="@violentmonkey/types" />
-
+import '@violentmonkey/types';
 import { Patch } from './patch';
 
 export interface PluginManifest {
