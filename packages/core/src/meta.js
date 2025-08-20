@@ -11,6 +11,7 @@
 // @license     process.env.LICENSE
 // @downloadURL https://dist.place.charity/framework/CharityFramework.user.js
 // @updateURL   https://dist.place.charity/framework/CharityFramework.user.js
+// @homepage    https://discord.gg/anBdazHcrH
 // @homepageURL https://discord.gg/anBdazHcrH
 // @supportURL  https://discord.gg/anBdazHcrH
 // @connect     *
