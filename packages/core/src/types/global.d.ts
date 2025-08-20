@@ -1,7 +1,3 @@
-import type * as maplibregl from 'maplibre-gl';
-import type { toast } from 'svelte-sonner';
-import { Plugin } from '../plugins';
-
 declare global {
 	interface Window {
 		esmsInitOptions?: {

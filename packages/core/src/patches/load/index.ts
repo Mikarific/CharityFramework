@@ -1,8 +1,12 @@
 import { Patch } from '@placecharity/framework-types';
+import { getUtils } from 'core/src/utils/gm';
 
 async function loadPlugins() {
 	for (const plugin of window.charity.internal.plugins) {
-		await plugin.def.load(plugin.manifest);
+		await plugin.def.load({
+			manifest: plugin.manifest,
+			utils: getUtils(plugin.manifest.id),
+		});
 	}
 }
 

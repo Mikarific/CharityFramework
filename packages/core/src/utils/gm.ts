@@ -1,3 +1,7 @@
+/// <reference types="@violentmonkey/types" />
+
+import { PluginUtils } from 'types/src';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function handleGM<T>(func: string, ...args: any[]): Promise<T> {
 	return new Promise((resolve, reject) => {
@@ -190,3 +194,33 @@ export const fetchWithoutCORS: typeof fetch = (input, init) => {
 		});
 	});
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function structuredClonable(value: any): boolean {
+	try {
+		structuredClone(value);
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+export function getUtils(pluginId: string) {
+	return {
+		async getValue(name, defaultValue) {
+			if (!structuredClonable(defaultValue)) throw new Error('defaultValue of getValue must be structured clonable.');
+			return GM.getValue(`${pluginId}_${name}`, defaultValue);
+		},
+		async setValue(name, value) {
+			if (!structuredClonable(value)) throw new Error('value of setValue must be structured clonable.');
+			return GM.setValue(name, value);
+		},
+		async deleteValue(name) {
+			return GM.deleteValue(name);
+		},
+		async listValues() {
+			return GM.listValues();
+		},
+		fetchWithoutCORS,
+	} as PluginUtils;
+}
