@@ -120,10 +120,6 @@ window.stop();
 
 	document.documentElement.style.display = '';
 
-	for (const plugin of window.charity.internal.plugins) {
-		await plugin.def.init({ manifest: plugin.manifest, utils: plugin.utils });
-	}
-
 	checkForUpdates()
 		.then(
 			(outOfDate) =>
