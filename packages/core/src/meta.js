@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        Charity Framework
-// @namespace   mikarific.com
+// @namespace   place.charity
 // @description A plugin loader for wplace.live.
 // @version     process.env.VERSION
 // @author      process.env.AUTHOR
@@ -14,6 +14,8 @@
 // @homepage    https://discord.gg/anBdazHcrH
 // @homepageURL https://discord.gg/anBdazHcrH
 // @supportURL  https://discord.gg/anBdazHcrH
+// @connect     dist.place.charity
+// @connect     localhost
 // @connect     *
 // @resource    logo https://dist.place.charity/assets/logo.png
 // @grant       GM.getValue
@@ -23,4 +25,5 @@
 // @grant       GM.getResourceUrl
 // @grant       GM.xmlHttpRequest
 // @grant       unsafeWindow
+// @require     https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
 // ==/UserScript==
