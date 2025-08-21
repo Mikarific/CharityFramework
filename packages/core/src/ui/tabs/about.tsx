@@ -1,6 +1,6 @@
 import { resources } from '../../utils/resources';
 import styles from '../styles/panel.module.css';
-import { createEffect, createSignal, Show } from 'solid-js';
+import { createSignal, Show } from 'solid-js';
 import { Card, CardDescription, CardTitle } from '../components/card';
 import { Button } from '../components/button';
 import { checkForUpdates } from '../../utils/updates';
