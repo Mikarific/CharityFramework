@@ -7,9 +7,8 @@ import { checkForUpdates } from '../../utils/updates';
 
 export function About() {
 	const [isOutOfDate, setOutOfDate] = createSignal(true);
-	createEffect(() => {
-		checkForUpdates().then((ood) => setOutOfDate(ood));
-	});
+	checkForUpdates().then((ood) => setOutOfDate(ood));
+
 	return (
 		<div class={styles.about}>
 			<Show when={isOutOfDate()}>

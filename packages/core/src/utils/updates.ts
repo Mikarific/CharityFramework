@@ -8,7 +8,7 @@ const isCurrentOutOfDate = (latest: FrameworkManifest) =>
 
 export async function checkForUpdates() {
 	if (window.charity.internal.latestManifest) return isCurrentOutOfDate(window.charity.internal.latestManifest);
-	const res = await fetch(MANIFEST_URL);
+	const res = await fetch(MANIFEST_URL + '?' + Date.now());
 
 	if (!res.ok) throw new Error('framework manifest url returned status=' + res.status);
 	const manifest: FrameworkManifest = await res.json();
