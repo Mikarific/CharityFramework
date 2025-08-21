@@ -17,6 +17,6 @@ export default [
 		},
 	},
 	{
-		ignores: ['dist/', '/dist-repo', 'plugin/'],
+		ignores: ['dist/', 'dist-repo/', 'plugin/'],
 	},
 ];
