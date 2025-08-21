@@ -120,17 +120,34 @@ window.stop();
 
 	document.documentElement.style.display = '';
 
-	for (const plugin of window.charity.internal.plugins) {
-		await plugin.def.init({ manifest: plugin.manifest, utils: plugin.utils });
-	}
-
 	checkForUpdates()
-		.then(
-			(outOfDate) =>
-				outOfDate &&
-				window.charity.lib.sonner.toast.warning(
-					'Charity Framework is out of date! Please go to the settings menu to update.',
-				),
-		)
+		.then((outOfDate) => {
+			if (!outOfDate) return;
+
+			const showOutOfDateToast = () =>
+				setTimeout(
+					() =>
+						window.charity.lib.sonner.toast.warning(
+							'Charity Framework is out of date! Please go to the settings menu to update.',
+						),
+					1000,
+				);
+			if (window.charity.lib.sonner.toast) return showOutOfDateToast();
+
+			const listener = (event: CustomEvent) => {
+				if (event.detail.name !== 'toast') return;
+
+				showOutOfDateToast();
+				document.removeEventListener('charity-expose', listener);
+			};
+			document.addEventListener('charity-expose', listener);
+		})
 		.catch((e) => console.error('[Charity]', 'failed to check for updates', e));
 })();
+
+/*
+event.detail.name === 'toast' &&
+						window.charity.lib.sonner.toast.warning(
+							'Charity Framework is out of date! Please go to the settings menu to update.',
+						),
+						*/

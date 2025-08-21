@@ -34,8 +34,11 @@ export const loadPlugin = async (url: string, manifest: PluginManifest) => {
 	const utils = getUtils(manifest.id);
 
 	const plugin: Plugin = { manifest, def, utils };
+	await plugin.def.init({ manifest: plugin.manifest, utils: plugin.utils });
+
 	window.charity.internal.plugins.push(plugin);
-	console.log('[Charity]', 'registered plugin', manifest.id, `(${manifest.version})`);
+
+	console.log('[Charity]', 'registered and initialized plugin', manifest.id, `(${manifest.version})`);
 };
 
 export const loadPlugins = async () => {

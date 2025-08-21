@@ -4,6 +4,7 @@ node_modules
 /.nyc_output
 /coverage
 /dist
+/dist-repo
 /plugin
 /types
 /docs

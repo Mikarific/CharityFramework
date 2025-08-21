@@ -15,7 +15,9 @@ import {
 	LeaderboardRegionEntry,
 	UserData,
 } from './game';
+import { FrameworkManifest } from './framework';
 
+export * from './framework';
 export * from './game';
 export * from './patch';
 export * from './plugin';
@@ -99,6 +101,7 @@ export type Charity = {
 			updateURL: string | null;
 			contributionURL: string | null;
 		};
+		latestManifest?: FrameworkManifest;
 		currentUrlOverride: string;
 		plugins: Plugin[];
 	};
