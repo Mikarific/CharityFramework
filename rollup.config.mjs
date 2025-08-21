@@ -11,6 +11,8 @@ import postcssPlugin from 'rollup-plugin-postcss';
 import terserPlugin from '@rollup/plugin-terser';
 
 import { readPackageUp } from 'read-package-up';
+import { execSync } from "child_process"
+
 const { packageJson } = await readPackageUp();
 
 const extensions = ['.ts', '.tsx', '.mjs', '.js', '.jsx'];
@@ -56,6 +58,7 @@ export default defineConfig([
 				.replace('process.env.VERSION', packageJson.version)
 				.replace('process.env.LICENSE', packageJson.license)
 			),
+			frameworkManifest()
 		],
 		external: defineExternal(['https://esm.sh/es-module-shims']),
 		output: {
@@ -135,3 +138,22 @@ function pageExecution() {
 		},
 	};
 };
+
+
+function frameworkManifest() {
+	return {
+		name: "frameworkManifest",
+		buildStart() {
+			const manifest = {
+				version: packageJson.version,
+				commit: execSync("git rev-parse HEAD").toString().trim()
+			}
+
+			this.emitFile({
+				type: "asset",
+				fileName: "manifest.json",
+				source: JSON.stringify(manifest, null ,2)
+			})
+		}
+	}
+}
