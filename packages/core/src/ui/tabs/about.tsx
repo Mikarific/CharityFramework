@@ -1,14 +1,18 @@
-import { isOutOfDate } from '../../utils/updates';
 import { resources } from '../../utils/resources';
 import styles from '../styles/panel.module.css';
-import { Show } from 'solid-js';
+import { createEffect, createSignal, Show } from 'solid-js';
 import { Card, CardDescription, CardTitle } from '../components/card';
 import { Button } from '../components/button';
+import { checkForUpdates } from '../../utils/updates';
 
 export function About() {
+	const [isOutOfDate, setOutOfDate] = createSignal(true);
+	createEffect(() => {
+		checkForUpdates().then((ood) => setOutOfDate(ood));
+	});
 	return (
 		<div class={styles.about}>
-			<Show when={isOutOfDate}>
+			<Show when={isOutOfDate()}>
 				<Card style='error'>
 					<CardTitle>Charity is out of date!</CardTitle>
 					<CardDescription>
