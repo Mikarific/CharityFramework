@@ -43,6 +43,7 @@ export async function executeDeepLink(): Promise<boolean> {
 		const ret = await type.render(document.getElementById('deeplinkRoot'));
 		if (ret === false) return ret;
 
+		document.documentElement.style.display = '';
 		return true;
 	}
 
