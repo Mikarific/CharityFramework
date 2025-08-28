@@ -49,6 +49,7 @@ export type Charity = {
 			Flag: Record<never, never>;
 			'Profile Picture': Record<never, never>;
 		};
+		palette: { name: string; rgb: [number, number, number]; idx: number }[];
 		products: {
 			[key: number]: {
 				name: string;
@@ -58,6 +59,7 @@ export type Charity = {
 				items: { name: string; amount: number }[];
 			};
 		};
+		reducedPalette: { name: string; rgb: [number, number, number]; idx: number }[];
 		refreshIntervalMs: number;
 		regionSize: number;
 		seasons: { tileSize: number; zoom: number }[];
